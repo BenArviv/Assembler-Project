@@ -1,5 +1,6 @@
 #include "utils.h"
 
+
 /* binToBase32: converts a binary number into a base-32 number using binToDec and decToBase32, 
                 and returns it as a string */
 char *binToBase32(int binary){
@@ -51,3 +52,38 @@ void decTo32(int dec, char key[], char *converted){
     }
 }
 
+char *createFileName(char *original, int type)
+{
+    char *newFileName = (char *)malloc(strlen(original) + MAX_EXTENSION_LEN);
+    if (newFileName == NULL)
+    {
+        fprintf(stderr, "Dynamic allocation error.");
+        exit(ERROR);
+    }
+    strcpy(newFileName, original); /* Copying original filename to the bigger string */
+
+    /* Concatenating the required file extension */
+
+    switch (type)
+    {
+    case FILE_INPUT:
+        strcat(newFileName, ".as");
+        break;
+
+    case FILE_OBJECT:
+        strcat(newFileName, ".ob");
+        break;
+
+    case FILE_ENTRY:
+        strcat(newFileName, ".ent");
+        break;
+
+    case FILE_EXTERN:
+        strcat(newFileName, ".ext");
+
+    case FILE_MACRO:
+        strcat(newFileName, ".am");
+        break;
+    }
+    return newFileName;
+}
