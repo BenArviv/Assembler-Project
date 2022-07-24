@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include "utils.h"
 
 /* 80 + \n + \0 */
 #define MAX_LINE 82
@@ -24,13 +25,6 @@ enum macrotypes
     MACRO,
     END_MACRO
 };
-
-/* Booleans to make code more readable */
-typedef enum
-{
-    FALSE,
-    TRUE
-} boolean;
 
 /* Prototypes */
 boolean preAssembler(FILE *fpr, char *writefilename, MacroNode **head);
