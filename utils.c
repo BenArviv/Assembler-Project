@@ -54,7 +54,7 @@ void decTo32(int dec, char key[], char *converted){
 
 char *createFileName(char *original, int type)
 {
-    char *newFileName = (char *)malloc(strlen(original) + MAX_EXTENSION_LEN);
+    char *newFileName = (char *)malloc(sizeof(strlen(original)) + MAX_EXTENSION_LEN);
     if (newFileName == NULL)
     {
         fprintf(stderr, "Dynamic allocation error.");
