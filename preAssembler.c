@@ -12,7 +12,7 @@ boolean preAssembler(FILE *fpr, char *writefilename, MacroNode **head)
         return FALSE;
     }
     return TRUE;
-}
+} /* hi */
 
 /*Performing the first pass on the file (inserting the macros into a linkedlist, copying the corresponding rows from the table to the file, etc.)*/
 boolean firstMacroPass(FILE *fp, MacroNode **head)
