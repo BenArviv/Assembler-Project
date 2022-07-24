@@ -12,5 +12,6 @@ int main(int argc, char *argv[]);
 /* Types of files that indicate what is the desirable file extension */
 enum filetypes {FILE_INPUT, FILE_OBJECT, FILE_ENTRY, FILE_EXTERN,FILE_MACRO};
 
+
 /* used for creating files and assigning required extensions to them */
 char *createFileName(char *original, int type);
