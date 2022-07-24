@@ -4,30 +4,30 @@ int main(int argc, char *argv[])
 {
     int i;
     char *filename;
+    char *amFilename;
     FILE *fp;
-    struct Macro *head = (struct Macro *)malloc(sizeof(struct Macro));
-
+    MacroNode *head = NULL;
     for (i = 1; i < argc; i++)
     {
         filename = createFileName(argv[i], FILE_INPUT);
         fp = fopen(filename, "r");
         if (fp != NULL)
-        {                          /* If file exists */
-            firstMacroPass(fp, head); /* inserting names and macro content into table */
-            filename = createFileName(argv[i], FILE_MACRO); /* .am appended to filename */
-            secondMacroPass(fp, filename, head); /* writing into .am file */
+        {
+            amFilename = createFileName(argv[i], FILE_MACRO); /* .am appended to filename */
+            preAssembler(fp, amFilename, &head);
+            free(amFilename); /* we have a pointer, hence no longer needed */
         }
         else
             printf("CANNOT_OPEN_FILE\n");
         free(filename);
-        printMacroTable(head);
     }
+    freeMacroNodes(&head);
     return 0;
 }
 
 char *createFileName(char *original, int type)
 {
-    char *newFileName = (char *)malloc(strlen(original) + MAX_EXTENSION_LEN);
+    char *newFileName = (char *)malloc(sizeof(strlen(original)) + MAX_EXTENSION_LEN);
     if (newFileName == NULL)
     {
         fprintf(stderr, "Dynamic allocation error.");
