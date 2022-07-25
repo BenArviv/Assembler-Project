@@ -8,7 +8,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Sun Jul 24 19:46:34 2022
+# Make data base, printed on Mon Jul 25 13:33:54 2022
 
 # Variables
 
@@ -27,7 +27,7 @@ WSLENV = VSCODE_WSL_EXT_LOCATION/up
 # automatic
 @F = $(notdir $@)
 # makefile
-CURDIR := /home/gal/Assembler-Project
+CURDIR := /home/gal/Assembler-Project-1
 # makefile
 SHELL = /bin/sh
 # environment
@@ -51,7 +51,7 @@ PATH = /home/gal/.vscode-server/bin/3b889b090b5ad5793f524b5d1d39fda662b96a2a/bin
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-VSCODE_IPC_HOOK_CLI = /tmp/vscode-ipc-9f3e11c0-51f3-4f9f-82cb-e63b23035dd1.sock
+VSCODE_IPC_HOOK_CLI = /tmp/vscode-ipc-71df11ed-cb7a-4656-860c-a73f63be474e.sock
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # environment
@@ -59,11 +59,11 @@ LS_COLORS = rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:
 # automatic
 %F = $(notdir $%)
 # environment
-PWD = /home/gal/Assembler-Project
+PWD = /home/gal/Assembler-Project-1
 # default
 .LOADED := 
 # environment
-WSL_INTEROP = /run/WSL/8028_interop
+WSL_INTEROP = /run/WSL/14_interop
 # environment
 VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
 # environment
@@ -73,7 +73,7 @@ LESSCLOSE = /usr/bin/lesspipe %s %s
 # environment
 LOGNAME = gal
 # environment
-APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
 # environment
 VSCODE_HANDLES_UNCAUGHT_ERRORS = true
 # automatic
@@ -138,8 +138,10 @@ LANG = C
 TERM = xterm-256color
 # environment
 WSL_DISTRO_NAME = Ubuntu
+# environment
+MOTD_SHOWN = update-motd
 # variable set hash-table stats:
-# Load=63/1024=6%, Rehash=0, Collisions=4/88=5%
+# Load=64/1024=6%, Rehash=0, Collisions=4/89=4%
 
 # Pattern-specific Variable Values
 
@@ -147,9 +149,9 @@ WSL_DISTRO_NAME = Ubuntu
 
 # Directories
 
-# . (device 2064, inode 51560): 13 files, no impossibilities.
+# . (device 2064, inode 51772): 19 files, no impossibilities.
 
-# 13 files, no impossibilities in 1 directories.
+# 19 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -165,13 +167,19 @@ all:
 #  File has not been updated.
 
 # Not a target:
+utils.c:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
 main.c:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
 
 # Not a target:
-main.h:
+utils.h:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
@@ -179,23 +187,23 @@ main.h:
 # Not a target:
 makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-07-24 19:46:26.1259259
+#  Last modified 2022-07-24 20:28:15.5359259
 #  File has been updated.
 #  Successfully updated.
 
-preAssembler.o: preAssembler.c preAssembler.h
+preAssembler.o: preAssembler.c preAssembler.h utils.o
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
 #  recipe to execute (from 'makefile', line 6):
 	gcc -c -ansi -Wall -pedantic preAssembler.c -o preAssembler.o
 
-assembler: main.o preAssembler.o
+assembler: main.o preAssembler.o utils.o
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
 #  recipe to execute (from 'makefile', line 2):
-	gcc -g -ansi -Wall -pedantic main.o preAssembler.o -o assembler -lm
+	gcc -g -ansi -Wall -pedantic main.o preAssembler.o utils.o -o assembler -lm
 
 # Not a target:
 .DEFAULT:
@@ -203,7 +211,14 @@ assembler: main.o preAssembler.o
 #  Modification time never checked.
 #  File has not been updated.
 
-main.o: main.c main.h
+utils.o: utils.c utils.h
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'makefile', line 8):
+	gcc -c -ansi -Wall -pedantic utils.c -o utils.o
+
+main.o: main.c
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
@@ -223,19 +238,19 @@ preAssembler.h:
 #  File has not been updated.
 
 # files hash-table stats:
-# Load=11/1024=1%, Rehash=0, Collisions=0/29=0%
+# Load=13/1024=1%, Rehash=0, Collisions=0/35=0%
 # VPATH Search Paths
 
 # No 'vpath' search paths.
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 21 / storage = 197 B / avg = 9 B
-# current buf: size = 8162 B / used = 197 B / count = 21 / avg = 9 B
+# strcache buffers: 1 (0) / strings = 24 / storage = 226 B / avg = 9 B
+# current buf: size = 8162 B / used = 226 B / count = 24 / avg = 9 B
 
-# strcache performance: lookups = 34 / hit rate = 38%
+# strcache performance: lookups = 45 / hit rate = 46%
 # hash-table stats:
-# Load=21/8192=0%, Rehash=0, Collisions=1/34=3%
-# Finished Make data base on Sun Jul 24 19:46:34 2022
+# Load=24/8192=0%, Rehash=0, Collisions=1/45=2%
+# Finished Make data base on Mon Jul 25 13:33:54 2022
 
  

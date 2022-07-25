@@ -3,9 +3,9 @@
 #include <string.h>
 #include <math.h>
 
-#ifndef UTILS.H
+#ifndef UTILS_H
 
-#define UTILS.H
+#define UTILS_H
 
 #define MAX_EXTENSION_LEN 5 /* for file prefix */
 
@@ -14,12 +14,11 @@ char *decToBase32(int);
 char *binToBase32(int);
 int binToDec(int);
 void decTo32(int, char[], char *);
-char *createFileName(char *, int);
+char *createFileName(char *original, int type);
 
-/* this array represents the symbols for our base-32 numbers */
-const char key[32] = {'!', '@', '#', '$', '%', '^', '&', '*', '<', '>',
-                     'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 
-                     'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v'};
+#define ERROR 1
+
+
 
 enum suffix {FILE_INPUT, FILE_MACRO, FILE_OBJECT, FILE_ENTRY, FILE_EXTERN};
 

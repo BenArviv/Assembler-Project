@@ -1,7 +1,8 @@
 make --dry-run --always-make --keep-going --print-directory
-make: Entering directory '/home/gal/Assembler-Project'
+make: Entering directory '/home/gal/Assembler-Project-1'
 gcc -c -ansi -Wall -pedantic main.c -o main.o
+gcc -c -ansi -Wall -pedantic utils.c -o utils.o
 gcc -c -ansi -Wall -pedantic preAssembler.c -o preAssembler.o
-gcc -g -ansi -Wall -pedantic main.o preAssembler.o -o assembler -lm
-make: Leaving directory '/home/gal/Assembler-Project'
+gcc -g -ansi -Wall -pedantic main.o preAssembler.o utils.o -o assembler -lm
+make: Leaving directory '/home/gal/Assembler-Project-1'
  

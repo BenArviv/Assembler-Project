@@ -1,6 +1,6 @@
-#ifndef STRUCTURES.H
+#ifndef STRUCTURES_H
 
-#define STRUCTURES.H
+#define STRUCTURES_H
 
 #define MAX 100 /* max line length */
 #define MAXS 31 /* max symbol length */

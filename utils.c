@@ -25,6 +25,11 @@ int binToDec(int n) {
 /* decToBase32: converts a decimal number to a base-32 number using decTo32, 
                 and returns it as a string */
 char *decToBase32(int decimal){
+    /* this array represents the symbols for our base-32 numbers */
+static char key[32] = {'!', '@', '#', '$', '%', '^', '&', '*', '<', '>',
+                     'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 
+                     'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v'};
+    
     char *converted = (char *)malloc(sizeof(char));
     
     decTo32(decimal, key, converted);
