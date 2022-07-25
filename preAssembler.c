@@ -19,10 +19,11 @@ boolean firstMacroPass(FILE *fp, MacroNode **head)
 {
     char line[MAX_LINE];
     MacroNode *temp;
-    int lineCount = 1;
+    int lineCount = 0;
     memset(line, '\0', MAX_LINE);
     while (fgets(line, MAX_LINE, fp))
     {
+        lineCount += 1;
         if (macroOperation(line) == MACRO)
         {
             temp = createNode();
@@ -36,11 +37,12 @@ boolean firstMacroPass(FILE *fp, MacroNode **head)
                 free(temp); /* frees the newly created node and returns false */
                 return FALSE;
             }
-            pushMacroContent(temp, fp);
+            printf("before increasing: %d\n",lineCount);
+            pushMacroContent(temp, fp, &lineCount);
+                        printf("after increasing: %d\n",lineCount);
             temp->next = *head;
             *head = temp;
-        }
-        lineCount += 1;
+        } 
     }
     return TRUE;
 }
@@ -177,7 +179,7 @@ boolean isComment(char *line)
 }
 
 /* Pushes the macro contents into macro node */
-void pushMacroContent(MacroNode *temp, FILE *fp)
+void pushMacroContent(MacroNode *temp, FILE *fp, int *lineCounter)
 {
     char line[MAX_LINE];
     char content[MAX_LINE];
@@ -186,7 +188,10 @@ void pushMacroContent(MacroNode *temp, FILE *fp)
     while (fgets(line, MAX_LINE, fp) != NULL && macroOperation(line) != END_MACRO &&!isComment(line))
     {
         strncat(content, line, MAX_LINE);
+        printf("counter in push macro content: %d\n", *lineCounter);
+        (*lineCounter)+=1;
     }
+    (*lineCounter)+=1;
     strcpy(temp->mcontent, content);
 }
 

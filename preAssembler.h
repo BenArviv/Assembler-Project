@@ -32,7 +32,7 @@ boolean firstMacroPass(FILE *fp, MacroNode **head);
 void secondMacroPass(FILE *fpr, char *writefilename, MacroNode **head);
 int macroOperation(char line[]);
 boolean pushMacroName(MacroNode *temp, char line[], int lineCount, MacroNode **head);
-void pushMacroContent(MacroNode *temp, FILE *fp);
+void pushMacroContent(MacroNode *temp, FILE *fp, int *lineCounter);
 boolean isMacroCall(char line[], FILE *fpw, MacroNode *head);
 MacroNode *createNode();
 void freeMacroNodes(MacroNode **head);
