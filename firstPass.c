@@ -1,5 +1,13 @@
 #include "firstPass.h"
-
+/*
+*                         ----- MESSAGE TO BEN -----
+* I didn't had time working on it today(August 1st) so i just committed for you to browse.
+*
+* Fully based (not copied) on the other project i've sent you with some major & minor changes.
+* The code is working as intended, although it needs a little bit more upgrades (eg. use a single struct instead of transferring 10 params to firstPass())
+* print_labels and write_error are 100% copy-pasted just for testing, Will be changed.
+* Any ideas are definitely welcome.
+*/
 void firstPass(FILE *fp, stringStruct cmd[], stringStruct dir[], boolean *externFlag, labelPtr *symbolsTable, int *dc, int *ic, unsigned int data[], unsigned int instructions[], boolean *recordedError)
 {
     char line[MAX_LINE];
