@@ -1,8 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
 #include "utils.h"
+#include "main.h"
 
 /* 80 + \n + \0 */
 #define MAX_LINE 82

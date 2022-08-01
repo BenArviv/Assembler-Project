@@ -168,8 +168,8 @@ boolean isValidName(char *name, MacroNode **head)
 /* Returns true if a line starts with ';' */
 boolean isComment(char *line)
 {
-    char firstWord[10];
-    memset(firstWord, '\0', 10);
+    char firstWord[MAX_LINE];
+    memset(firstWord, '\0', MAX_LINE);
     if (sscanf(line, "%s", firstWord))
     {
         if (firstWord[0] == ';')

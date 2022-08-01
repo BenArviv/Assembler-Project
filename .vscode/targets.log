@@ -8,7 +8,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Mon Jul 25 13:33:54 2022
+# Make data base, printed on Mon Aug  1 23:41:08 2022
 
 # Variables
 
@@ -51,7 +51,7 @@ PATH = /home/gal/.vscode-server/bin/3b889b090b5ad5793f524b5d1d39fda662b96a2a/bin
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-VSCODE_IPC_HOOK_CLI = /tmp/vscode-ipc-71df11ed-cb7a-4656-860c-a73f63be474e.sock
+VSCODE_IPC_HOOK_CLI = /tmp/vscode-ipc-e71f146b-de94-4d81-8efd-3ca1e951d7ff.sock
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # environment
@@ -149,9 +149,9 @@ MOTD_SHOWN = update-motd
 
 # Directories
 
-# . (device 2064, inode 51772): 19 files, no impossibilities.
+# . (device 2064, inode 51772): 22 files, no impossibilities.
 
-# 19 files, no impossibilities in 1 directories.
+# 22 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -172,6 +172,13 @@ utils.c:
 #  Modification time never checked.
 #  File has not been updated.
 
+firstPass.o: firstPass.c firstPass.h
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'makefile', line 6):
+	gcc -c -ansi -Wall -pedantic firstPass.c -o firstPass.o
+
 # Not a target:
 main.c:
 #  Implicit rule search has not been done.
@@ -185,25 +192,43 @@ utils.h:
 #  File has not been updated.
 
 # Not a target:
+structures.h:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+main.h:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
 makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-07-24 20:28:15.5359259
+#  Last modified 2022-07-29 21:48:24.7066084
 #  File has been updated.
 #  Successfully updated.
+
+# Not a target:
+firstPass.c:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
 
 preAssembler.o: preAssembler.c preAssembler.h utils.o
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  recipe to execute (from 'makefile', line 6):
+#  recipe to execute (from 'makefile', line 8):
 	gcc -c -ansi -Wall -pedantic preAssembler.c -o preAssembler.o
 
-assembler: main.o preAssembler.o utils.o
+assembler: main.o preAssembler.o utils.o firstPass.o
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
 #  recipe to execute (from 'makefile', line 2):
-	gcc -g -ansi -Wall -pedantic main.o preAssembler.o utils.o -o assembler -lm
+	gcc -g -ansi -Wall -pedantic main.o preAssembler.o utils.o firstPass.o -o assembler -lm
 
 # Not a target:
 .DEFAULT:
@@ -211,14 +236,27 @@ assembler: main.o preAssembler.o utils.o
 #  Modification time never checked.
 #  File has not been updated.
 
-utils.o: utils.c utils.h
+# Not a target:
+firstPass.h:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  recipe to execute (from 'makefile', line 8):
+
+clean:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'makefile', line 14):
+	rm -rf *.o assembler
+
+utils.o: utils.c utils.h structures.h
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'makefile', line 10):
 	gcc -c -ansi -Wall -pedantic utils.c -o utils.o
 
-main.o: main.c
+main.o: main.c main.h
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
@@ -238,19 +276,20 @@ preAssembler.h:
 #  File has not been updated.
 
 # files hash-table stats:
-# Load=13/1024=1%, Rehash=0, Collisions=0/35=0%
+ 
+# Load=19/1024=2%, Rehash=0, Collisions=1/47=2%
 # VPATH Search Paths
 
 # No 'vpath' search paths.
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 24 / storage = 226 B / avg = 9 B
-# current buf: size = 8162 B / used = 226 B / count = 24 / avg = 9 B
+# strcache buffers: 1 (0) / strings = 28 / storage = 263 B / avg = 9 B
+# current buf: size = 8162 B / used = 263 B / count = 28 / avg = 9 B
 
-# strcache performance: lookups = 45 / hit rate = 46%
+# strcache performance: lookups = 57 / hit rate = 50%
 # hash-table stats:
-# Load=24/8192=0%, Rehash=0, Collisions=1/45=2%
-# Finished Make data base on Mon Jul 25 13:33:54 2022
+# Load=28/8192=0%, Rehash=0, Collisions=1/57=2%
+# Finished Make data base on Mon Aug  1 23:41:08 2022
 
  
