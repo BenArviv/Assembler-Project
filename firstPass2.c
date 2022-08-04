@@ -1,112 +1,88 @@
-#include "firstPass.h"
-/*
-*                         ----- MESSAGE TO BEN -----
-* I didn't had time working on it today(August 1st) so i just committed for you to browse.
-*
-* Fully based (not copied) on the other project i've sent you with some major & minor changes.
-* The code is working as intended, although it needs a little bit more upgrades (eg. use a single struct instead of transferring 10 params to firstPass())
-* print_labels and write_error are 100% copy-pasted just for testing, Will be changed.
-* Any ideas are definitely welcome.
-*/
+#include "firstPass2.h"
 
-void firstPass(FILE *fp, stringStruct cmd[], stringStruct dir[], boolean *externFlag, labelPtr *symbolsTable, int *dc, int *ic, unsigned int data[], unsigned int instructions[], boolean *recordedError)
-{
+void firstPass2(FILE *fp, stringStruct cmd[], stringStruct dir[], extVars *vars){
     char line[MAX_LINE];
     int lineCount = 1;
     int error = NO_ERROR;
-    *ic = 0;
-    *dc = 0;
+    vars -> ic = 0;
+    vars -> dc = 0;
     puts("--------IN FIRST PASS---------");
-    while (fgets(line, MAX_LINE, fp))
-    {
+    while (fgets(line, MAX_LINE, fp)){
         error = NO_ERROR;
         if (!skipLine(line))
-            readLine(line, &error, cmd, dir, externFlag, symbolsTable, dc, ic, data, instructions);
-        if (isError(&error))
-        {
-            *recordedError = TRUE;
-            write_error(lineCount, error); /* TODO: END THIS: */ 
+            readLine(line, &error, cmd, dir, vars);
+        if (isError(&error)){
+            vars -> recordedError = TRUE;
+            write_error(lineCount, error); /* TODO: end this */
         }
 
         lineCount++;
     }
-    printf("IC: %d --- dc: %d \n", *ic, *dc); 
-    offsetAdd(*symbolsTable, MEMORY_START, FALSE); /* Instruction Symbols */ 
-    offsetAdd(*symbolsTable, *ic+MEMORY_START, TRUE); /* Data Symbols */ 
-} 
+    printf("IC: %d --- DC: %d\n", vars -> ic, vars -> dc);
+    offsetAdd(vars -> symbolsTable, MEMORY_START, FALSE); /* Instruction symbols */
+    offsetAdd(vars -> symbolsTable, vars -> ic + MEMORY_START, TRUE); /* Data symbols */
+}
 
-/*Analyzing a given line from file */
-void readLine(char *line, int *error, stringStruct cmd[], stringStruct dir[], boolean *externFlag, labelPtr *symbolsTable, int *dc, int *ic, unsigned int data[], unsigned int instructions[])
-{
+/* readLine: analyzing a given line from file */
+void readLine(char *line, int *error, stringStruct cmd[], stringStruct dir[], extVars *vars){
     int cmdType = UNKNOWN_COMMAND;
     int dirType = UNKNOWN_DIR;
 
-    boolean label = FALSE; /*Flag for lables */
+    boolean label = FALSE; /* flag for labels */
     labelPtr labelNode = NULL;
     char word[MAX_LINE];
     memset(word, '\0', MAX_LINE);
     line = skipWhiteChars(line);
     if (isLineEnd(line))
         return;
-    if (!isalpha(*line) && *line != '.') /*If line doesn't start with . or alpha char it's a syntax error */
-    {
+    if (!isalpha(*line) && *line != '.'){ /* if line doesn't start with '.' or alpha char it's a syntax error */
         *error = SYNTAX_ERR;
         return;
     }
 
     copyWord(word, line);
 
-    if (isLabel(word, COLON, error, cmd)) /*if it's label */
-    {
+    if (isLabel(word, COLON, error, cmd)){ /* if it's a label */
         label = TRUE;
-        labelNode = addLabel(symbolsTable, word, 0, error, externFlag, FALSE);
+        labelNode addLabel(vars -> symbolsTable, word, 0, vars -> externFlag, FALSE);
         if (labelNode == NULL)
             return;
-        line = nextWord(line); /*going to the next word in line */
-        if (line == NULL)
-        {
+        line = nextWord(line); /* going to the next word in line */
+        if (line == NULL){
             *error = LABEL_ONLY;
-            return;
+            return;        
         }
-
-        copyWord(word, line); /*Copy the first word in line into "word" */
+        copyWord(word, line); /* copy the first word in line into "word" */
     }
 
     if (isError(error))
         return;
 
-    if ((dirType = findDirective(word, dir)) != NOT_FOUND) /*if it's a directive */
-    {
-        if (label) /*if we're inside a label creation */
-        {
-            if (dirType == EXTERN || dirType == ENTRY) /*ignore creation of label if so */
-            {
-                deleteLabel(symbolsTable, labelNode->name);
+    if ((dirType = findDirective(word, dir)) != NOT_FOUND){ /* if it's a directive */
+        if (label){ /* if we're inside a label creation */
+            if (dirType == EXTERN || dirType == ENTRY){ /* ignore creation of label if so */
+                deleteLabel(vars -> symbolsTable, labelNode -> name);
                 label = FALSE;
             }
-            else
-                labelNode->address = *dc;
+            else 
+                labelNode -> address = vars -> dc;
         }
 
         line = nextWord(line);
-        handleDir(dirType, line, error, dc, data, cmd, symbolsTable, externFlag);
+        handleDir(dirType, line, error, cmd, vars);
     }
-    else if ((cmdType = findCMD(word, cmd)) != NOT_FOUND) /*if it's a command */
-    {
-        if (label)
-        {
-            labelNode->inActionStatement = TRUE;
-            labelNode->address = *ic;
+    else if ((cmdType = findCMD(word, cmd)) != NOT_FOUND){ /* if it's a command */
+        if (label){
+            labelNode -> inActionStatement = TRUE;
+            labelNode -> address = vars -> ic;
         }
 
         line = nextWord(line);
-        handleCMD(cmdType, line, error, cmd, instructions, ic);
+        handleCMD(cmdType, line, error, cmd, vars -> instructions, &(vars -> ic));
     }
-    else /*Unknown command */
-    {
+    else{ /* unknown command */
         *error = COMMAND_NOT_FOUND;
     }
-
 }
 
 int handleCMD(int type, char *line, int *error, stringStruct cmd[], unsigned int instructions[], int *ic)
@@ -346,30 +322,27 @@ int AddMethodNumOfWords(int addMethod)
     ########################################################################
 */
 
-int handleDir(int type, char *line, int *error, int *dc, unsigned int data[], stringStruct cmd[], labelPtr *symbolsTable, boolean *externFlag)
-{
-    if (line == NULL || isLineEnd(line))
-    {
+int handleDir(int type, char *line, int *error, extVars *vars){
+    if (line == NULL || isLineEnd(line)){
         *error = DIRECTIVE_NO_PARAMS;
         return ERROR;
     }
+    
+    switch (type){
+        case DATA:
+            return handleDataDir(line, error, &(vars -> dc), vars -> data);
+        
+        case STRING:
+            return handleStringDir(line, error, &(vars -> dc), vars -> data);
 
-    switch (type)
-    {
-    case DATA:
-        return handleDataDir(line, error, dc, data);
+        case STRUCT:
+            return handleStructDir(line, error, &(vars -> dc), vars -> data);
+        
+        case ENTRY:
+            return handleEntryDir(line, error); /* actually only checks syntax */
 
-    case STRING:
-        return handleStringDir(line, error, dc, data);
-
-    case STRUCT:
-        return handleStructDir(line, error, dc, data);
-
-    case ENTRY:
-        return handleEntryDir(line, error); /* actually only checks syntax */
-
-    case EXTERN:
-        return handleExternDir(line, error, dc, data, cmd, symbolsTable, externFlag);
+        case EXTERN:
+            return handleExternDir(line, error ,cmd, vars);
     }
 
     return NO_ERROR;
@@ -543,27 +516,23 @@ int handleEntryDir(char *line, int *error)
     return NO_ERROR;
 }
 
-int handleExternDir(char *line, int *error, int *dc, unsigned int data[], stringStruct cmd[], labelPtr *symbolsTable, boolean *externFlag)
-{
+int handleExternDir(char *line, int *error, stringStruct cmd[], extVars *vars){
     char word[MAX_LINE];
     copyWord(word, line);
-    if (isLineEnd(word))
-    {
+    if (isLineEnd(word)){
         *error = EXTERN_NO_LABEL;
         return ERROR;
     }
-    if (!isLabel(word, FALSE, error, cmd))
-    {
+    if (!isLabel(word, FALSE, error, cmd)){
         *error = EXTERN_INVALID_LABEL;
         return ERROR;
     }
     line = nextWord(line);
-    if (!isLineEnd(line))
-    {
+    if (!isLineEnd(line)){
         *error = EXTERN_TOO_MANY_OPERANDS;
         return ERROR;
     }
-    if (addLabel(symbolsTable, word, EXTERNAL_DEFAULT_ADDRESS, error, externFlag, TRUE) == NULL)
+    if (addLabel(vars -> symbolsTable, word, EXTERNAL_DEFAULT_ADDRESS, error, vars -> externFlag, TRUE) == NULL)
         return ERROR;
     return isError(error);
 }
@@ -589,200 +558,3 @@ void writeStringToData(char *str, int *dc, unsigned int data[])
        LABELS
    ################## */
 
-boolean isLabel(char *word, int colon, int *error, stringStruct cmd[])
-{
-    boolean digits = FALSE; /*If there are digits we can be sure it's not a command name */
-
-    int wordLength = strlen(word);
-    int i;
-
-    /*if word is to short to be a label return false */
-    if (((colon) && (wordLength < MINIMUM_LABEL_LENGTH_WITH_COLON)) || ((!colon) && (wordLength < MINIMUM_LABEL_LENGTH_WITHOUT_COLON)) || (word == NULL))
-        return FALSE;
-    /*if we need a colon but it doesn't exist or not at the end return false */
-    if (colon && word[wordLength - 1] != ':')
-        return FALSE;
-    /*if word is longer than maximum label length (and we are looking for a label definition) return false */
-    if (wordLength > LABEL_LENGTH)
-    {
-        if (colon)
-            *error = LABEL_TOO_LONG;
-        return FALSE;
-    }
-
-    /*first character must be a letter */
-    if (!isalpha(*word))
-    {
-        if (colon)
-            *error = LABEL_INVALID_FIRST_CHAR;
-        return FALSE;
-    }
-
-    /*removing the colon if needed so it will be easier to proccess */
-    if (colon)
-    {
-        word[wordLength - 1] = '\0';
-        wordLength--;
-    }
-
-    /*After ruling out the previous errors, checking if the all chars are alphanumeric as defined in page 26*/
-    for (i = 1; i < wordLength; i++) /*starting from 1 since we have checked the 1st char already */
-    {
-        if (isdigit(word[i]))
-            digits = TRUE;
-        else if (!isalpha(word[i]))
-        {
-            if (colon)
-                *error = LABEL_ONLY_ALPHANUMERIC;
-            return FALSE;
-        }
-    }
-
-    if (!digits)
-    {
-
-        if (findCMD(word, cmd) != NOT_FOUND)
-        {
-            if (colon)
-                *error = LABEL_CANT_BE_COMMAND;
-            return FALSE;
-        }
-    }
-
-    if (isRegister(word))
-    {
-        if (colon)
-            *error = LABEL_CANT_BE_REGISTER;
-        return FALSE;
-    }
-
-    return TRUE;
-}
-
-labelPtr addLabel(labelPtr *head, char *name, unsigned int address, int *error, boolean *externFlag, boolean external)
-{
-    labelPtr ptr = *head;
-    labelPtr temp;
-
-    if (isExistingLabel(*head, name))
-    {
-        *error = LABEL_ALREADY_EXISTS;
-        return NULL;
-    }
-
-    temp = (labelPtr)malloc(sizeof(labelList));
-    if (!temp)
-    {
-        puts("\nError, Cannot allocate memory\n");
-        exit(ERROR);
-    }
-
-    /*Storing label info in temp node */
-    strcpy(temp->name, name);
-    temp->IsEntry = FALSE;
-    temp->address = address;
-    temp->IsExternal = external;
-
-    if (!external)
-        temp->inActionStatement = external;
-    else
-        *externFlag = TRUE;
-
-    if (!(*head))
-    {
-        *head = temp;
-        temp->next = NULL;
-        return temp;
-    }
-
-    while (ptr->next != NULL)
-        ptr = ptr->next;
-    temp->next = NULL;
-    ptr->next = temp;
-
-    return temp;
-}
-
-/*checks if a given name is a name of a label in the list */
-boolean isExistingLabel(labelPtr head, char *name)
-{
-    return getLabel(head, name) != NULL;
-}
-
-/*checks if a given label name is in the list if so return the lable else returns NULL. */
-labelPtr getLabel(labelPtr head, char *name)
-{
-    while (head)
-    {
-        if (!strcmp(head->name, name)) /*we found a label with the name given */
-            return head;
-        head = head->next;
-    }
-
-    return NULL;
-}
-
-void freeLabels(labelPtr *head)
-{
-    labelPtr temp;
-    while (*head)
-    {
-        temp = *head;
-        *head = (*head)->next;
-        free(temp);
-    }
-}
-
-boolean deleteLabel(labelPtr *head, char *name)
-{
-    labelPtr temp = *head;
-    labelPtr prev;
-    while (temp)
-    {
-        if (!strcmp(temp->name, name))
-        {
-            if (!strcmp(temp->name, (*head)->name))
-            {
-                *head = (*head)->next;
-                free(temp);
-            }
-            else
-            {
-                prev->next = temp->next;
-                free(temp);
-            }
-
-            return TRUE;
-        }
-
-        prev = temp;
-        temp = temp->next;
-    }
-
-    return FALSE;
-}
-
-void offsetAdd(labelPtr label, int num, boolean isData)
-{
-    while (label)
-    {
-        if (!(label->IsExternal) && (isData ^ (label->inActionStatement)))
-            label->address += num;
-        label = label->next;
-    }
-}
-
-void print_labels(labelPtr h)
-{
-    while (h)
-    {
-        printf("\nname: %s, address: %d, external: %d", h->name, h->address, h->IsExternal);
-        if (h->IsExternal == 0)
-            printf(", is in action statement: %d -> ", h->inActionStatement);
-        else
-            printf(" -> ");
-        h = h->next;
-    }
-
-    printf("*");
-}

@@ -56,8 +56,10 @@ void secondMacroPass(FILE *fpr, char *writefilename, MacroNode **head)
     FILE *fpw;
     rewind(fpr);
     fpw = fopen(writefilename, "w");
-    if (fpw == NULL)
+    if (fpw == NULL){
         printf("Error: can't open file: %s \n \n", writefilename);
+        return;
+    }
     while (fgets(line, MAX_LINE, fpr))
     {
         if (!inMacro)
