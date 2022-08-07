@@ -1,5 +1,0 @@
-make --dry-run --keep-going --print-directory
-make: Entering directory '/home/benarviv/Assembler-Project-1'
-make: 'assembler' is up to date.
-make: Leaving directory '/home/benarviv/Assembler-Project-1'
- 
