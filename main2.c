@@ -7,29 +7,6 @@
 
 int main(int argc, char *argv[])
 {
-
-    stringStruct cmd[] = {{"mov"},
-                          {"cmp"},
-                          {"add"},
-                          {"sub"},
-                          {"not"},
-                          {"clr"},
-                          {"lea"},
-                          {"inc"},
-                          {"dec"},
-                          {"jmp"},
-                          {"bne"},
-                          {"get"},
-                          {"prn"},
-                          {"jsr"},
-                          {"rts"},
-                          {"hlt"}};
-
-    stringStruct dir[] = {{".data"},
-                          {".string"},
-                          {".struct"},
-                          {".entry"},
-                          {".extern"}};
     int i;
     char *filename;
     char *amFilename;
@@ -40,6 +17,27 @@ int main(int argc, char *argv[])
     vars -> externFlag = FALSE;
     vars -> recordedError = FALSE;
     vars -> symbolsTable = NULL;
+    vars -> cmd[] = {{"mov"},
+                    {"cmp"},
+                    {"add"},
+                    {"sub"},
+                    {"not"},
+                    {"clr"},
+                    {"lea"},
+                    {"inc"},
+                    {"dec"},
+                    {"jmp"},
+                    {"bne"},
+                    {"get"},
+                    {"prn"},
+                    {"jsr"},
+                    {"rts"},
+                    {"hlt"}};
+    vars -> dir[] = {{".data"},
+                    {".string"},
+                    {".struct"},
+                    {".entry"},
+                    {".extern"}};
     /*
     int dc = 0;
     int ic = 0;
@@ -72,9 +70,9 @@ int main(int argc, char *argv[])
             printf("CANNOT_OPEN_FILE\n");
         free(filename);
     }
-    printf("Have we recorded an error: --> %d <-- (1 - TRUE | 0 - FALSE) \n", vars -> recordedError);
+    printf("Have we recorded an error: --> %d <-- (1 - TRUE | 0 - FALSE) \n", vars->recordedError);
     freeMacroNodes(&head);
-    print_labels(vars -> symbolsTable);
-    freeLabels(&(vars -> symbolsTable));
+    print_labels(vars->symbolsTable);
+    freeLabels(&(vars->symbolsTable));
     return 0;
 }
