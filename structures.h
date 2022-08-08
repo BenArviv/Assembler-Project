@@ -35,6 +35,8 @@ typedef struct vars_s {
 	boolean externFlag; /* a flag if current symbol has .extern label */
 	boolean recordedError; /* a flag if an error had encountered */
 	labelPtr symbolsTable;
+	stringStruct cmd;
+	stringStruct dir;
 } extVars;
 
 typedef struct extVars *extPtr;
