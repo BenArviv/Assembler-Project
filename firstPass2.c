@@ -1,19 +1,20 @@
 #include "firstPass2.h"
+#include "labelUtils.h"
 
-void firstPass2(FILE *fp, stringStruct cmd[], stringStruct dir[], extVars *vars){
+void firstPass2(FILE *fp, extVars *vars){
     char line[MAX_LINE];
     int lineCount = 1;
-    int error = NO_ERROR;
+    vars -> error = NO_ERROR;
     vars -> ic = 0;
     vars -> dc = 0;
     puts("--------IN FIRST PASS---------");
     while (fgets(line, MAX_LINE, fp)){
-        error = NO_ERROR;
+        vars -> error = NO_ERROR;
         if (!skipLine(line))
-            readLine(line, &error, cmd, dir, vars);
-        if (isError(&error)){
+            readLine(line, vars);
+        if (isError(&(vars ->error))){
             vars -> recordedError = TRUE;
-            write_error(lineCount, error); /* TODO: end this */
+            write_error(lineCount, vars -> error); /* TODO: end this */
         }
 
         lineCount++;
@@ -24,7 +25,7 @@ void firstPass2(FILE *fp, stringStruct cmd[], stringStruct dir[], extVars *vars)
 }
 
 /* readLine: analyzing a given line from file */
-void readLine(char *line, int *error, stringStruct cmd[], stringStruct dir[], extVars *vars){
+void readLine(char *line, extVars *vars){
     int cmdType = UNKNOWN_COMMAND;
     int dirType = UNKNOWN_DIR;
 
@@ -36,32 +37,32 @@ void readLine(char *line, int *error, stringStruct cmd[], stringStruct dir[], ex
     if (isLineEnd(line))
         return;
     if (!isalpha(*line) && *line != '.'){ /* if line doesn't start with '.' or alpha char it's a syntax error */
-        *error = SYNTAX_ERR;
+        vars -> error = SYNTAX_ERR;
         return;
     }
 
     copyWord(word, line);
 
-    if (isLabel(word, COLON, error, cmd)){ /* if it's a label */
+    if (isLabel(word, COLON, vars)){ /* if it's a label */
         label = TRUE;
-        labelNode addLabel(vars -> symbolsTable, word, 0, vars -> externFlag, FALSE);
+        labelNode = addLabel(word, 0, vars, FALSE);
         if (labelNode == NULL)
             return;
         line = nextWord(line); /* going to the next word in line */
         if (line == NULL){
-            *error = LABEL_ONLY;
+            vars -> error = LABEL_ONLY;
             return;        
         }
         copyWord(word, line); /* copy the first word in line into "word" */
     }
 
-    if (isError(error))
+    if (isError(&(vars -> error)))
         return;
 
-    if ((dirType = findDirective(word, dir)) != NOT_FOUND){ /* if it's a directive */
+    if ((dirType = findDirective(word, vars -> dir)) != NOT_FOUND){ /* if it's a directive */
         if (label){ /* if we're inside a label creation */
             if (dirType == EXTERN || dirType == ENTRY){ /* ignore creation of label if so */
-                deleteLabel(vars -> symbolsTable, labelNode -> name);
+                deleteLabel(&(vars -> symbolsTable), labelNode -> name);
                 label = FALSE;
             }
             else 
@@ -69,23 +70,23 @@ void readLine(char *line, int *error, stringStruct cmd[], stringStruct dir[], ex
         }
 
         line = nextWord(line);
-        handleDir(dirType, line, error, cmd, vars);
+        handleDir(dirType, line, vars);
     }
-    else if ((cmdType = findCMD(word, cmd)) != NOT_FOUND){ /* if it's a command */
+    else if ((cmdType = findCMD(word, vars -> cmd)) != NOT_FOUND){ /* if it's a command */
         if (label){
             labelNode -> inActionStatement = TRUE;
             labelNode -> address = vars -> ic;
         }
 
         line = nextWord(line);
-        handleCMD(cmdType, line, error, cmd, vars -> instructions, &(vars -> ic));
+        handleCMD(cmdType, line, vars);
     }
     else{ /* unknown command */
-        *error = COMMAND_NOT_FOUND;
+        vars -> error = COMMAND_NOT_FOUND;
     }
 }
 
-int handleCMD(int type, char *line, int *error, stringStruct cmd[], unsigned int instructions[], int *ic)
+int handleCMD(int type, char *line, extVars *vars)
 {
     boolean firstOperand = FALSE, secondOperand = FALSE;
     int firstAddMethod, secondAddMethod;
@@ -101,7 +102,7 @@ int handleCMD(int type, char *line, int *error, stringStruct cmd[], unsigned int
             /* we need a comma delimeter */
             if (*secondOp != ',')
             {
-                *error = COMMAND_UNEXPECTED_CHAR;
+                vars -> error = COMMAND_UNEXPECTED_CHAR;
                 return ERROR;
             }
             else
@@ -109,7 +110,7 @@ int handleCMD(int type, char *line, int *error, stringStruct cmd[], unsigned int
                 line = nextCommaWord(secondOp, line);
                 if (isLineEnd(secondOp)) /* if we have only a comma without 2nd operand */
                 {
-                    *error = COMMAND_UNEXPECTED_CHAR;
+                    vars -> error = COMMAND_UNEXPECTED_CHAR;
                     return ERROR;
                 }
                 secondOperand = TRUE;
@@ -119,31 +120,31 @@ int handleCMD(int type, char *line, int *error, stringStruct cmd[], unsigned int
     line = skipWhiteChars(line);
     if (!isLineEnd(line)) /* if we have extra chars after the operands */
     {
-        *error = COMMAND_TOO_MANY_OPERANDS;
+        vars -> error = COMMAND_TOO_MANY_OPERANDS;
         return ERROR;
     }
     if (firstOperand)
-        firstAddMethod = methodDetect(firstOp, error, cmd);
+        firstAddMethod = methodDetect(firstOp, vars);
     if (secondOperand)
-        secondAddMethod = methodDetect(secondOp, error, cmd);
-     if (!isError(error))
+        secondAddMethod = methodDetect(secondOp, vars);
+     if (!isError(&(vars -> error)))
         {
             if (cmdOpernads(type, firstOperand, secondOperand))
             {
                 if (cmdMethods(type, firstAddMethod, secondAddMethod))
                 {
-                    encodeInsturction(encodeWord(type, firstOperand, secondOperand, firstAddMethod, secondAddMethod), instructions, ic);
-                    *ic += numberOfWords(firstOperand, secondOperand, firstAddMethod, secondAddMethod);
+                    encodeInsturction(encodeWord(type, firstOperand, secondOperand, firstAddMethod, secondAddMethod), vars -> instructions, &(vars -> ic));
+                    vars -> ic += numberOfWords(firstOperand, secondOperand, firstAddMethod, secondAddMethod);
                 }
                 else
                 {
-                    *error = COMMAND_INVALID_OPERANDS_METHODS;
+                    vars -> error = COMMAND_INVALID_OPERANDS_METHODS;
                     return ERROR;
                 }
             }
             else
             {
-                *error = COMMAND_INVALID_NUMBER_OF_OPERANDS;
+                vars -> error = COMMAND_INVALID_NUMBER_OF_OPERANDS;
                 return ERROR;
             }
         }
@@ -153,7 +154,7 @@ int handleCMD(int type, char *line, int *error, stringStruct cmd[], unsigned int
 /*
     Addressing Methods - (0 - Immediate, 1 - Direct, 2 - Struct, 3  - Register)
 */
-int methodDetect(char *operand, int *error, stringStruct cmd[])
+int methodDetect(char *operand, extVars *vars)
 {
     char *structPointer;
     puts("in method detect");
@@ -174,19 +175,19 @@ int methodDetect(char *operand, int *error, stringStruct cmd[])
         return METHOD_REGISTER;
 
     /* --- Direct --- */
-    else if (isLabel(operand, FALSE, error, cmd))
+    else if (isLabel(operand, FALSE, vars))
     {
         return METHOD_DIRECT;
     }
 
     /* --- Struct --- */
-    else if (isLabel(strtok(operand, "."), FALSE, error, cmd))
+    else if (isLabel(strtok(operand, "."), FALSE, vars))
     {
         structPointer = strtok(NULL, "");
         if (strlen(structPointer) == 1 && (*structPointer == '1' || *structPointer == '2'))
             return METHOD_STRUCT;
     }
-    *error = COMMAND_INVALID_METHOD;
+    vars -> error = COMMAND_INVALID_METHOD;
     return NOT_FOUND;
 }
 
@@ -322,27 +323,27 @@ int AddMethodNumOfWords(int addMethod)
     ########################################################################
 */
 
-int handleDir(int type, char *line, int *error, extVars *vars){
+int handleDir(int type, char *line, extVars *vars){
     if (line == NULL || isLineEnd(line)){
-        *error = DIRECTIVE_NO_PARAMS;
+        vars -> error = DIRECTIVE_NO_PARAMS;
         return ERROR;
     }
     
     switch (type){
         case DATA:
-            return handleDataDir(line, error, &(vars -> dc), vars -> data);
+            return handleDataDir(line, &(vars -> error), &(vars -> dc), vars -> data);
         
         case STRING:
-            return handleStringDir(line, error, &(vars -> dc), vars -> data);
+            return handleStringDir(line, &(vars -> error), &(vars -> dc), vars -> data);
 
         case STRUCT:
-            return handleStructDir(line, error, &(vars -> dc), vars -> data);
+            return handleStructDir(line, &(vars -> error), &(vars -> dc), vars -> data);
         
         case ENTRY:
-            return handleEntryDir(line, error); /* actually only checks syntax */
+            return handleEntryDir(line, &(vars -> error)); /* actually only checks syntax */
 
         case EXTERN:
-            return handleExternDir(line, error ,cmd, vars);
+            return handleExternDir(line, &(vars -> error) ,vars -> cmd, vars);
     }
 
     return NO_ERROR;
@@ -523,7 +524,7 @@ int handleExternDir(char *line, int *error, stringStruct cmd[], extVars *vars){
         *error = EXTERN_NO_LABEL;
         return ERROR;
     }
-    if (!isLabel(word, FALSE, error, cmd)){
+    if (!isLabel(word, FALSE, vars)){
         *error = EXTERN_INVALID_LABEL;
         return ERROR;
     }
@@ -532,7 +533,7 @@ int handleExternDir(char *line, int *error, stringStruct cmd[], extVars *vars){
         *error = EXTERN_TOO_MANY_OPERANDS;
         return ERROR;
     }
-    if (addLabel(vars -> symbolsTable, word, EXTERNAL_DEFAULT_ADDRESS, error, vars -> externFlag, TRUE) == NULL)
+    if (addLabel(word, EXTERNAL_DEFAULT_ADDRESS, vars, TRUE) == NULL)
         return ERROR;
     return isError(error);
 }
@@ -553,8 +554,3 @@ void writeStringToData(char *str, int *dc, unsigned int data[])
 
     data[(*dc)++] = '\0';
 }
-
-/*##################
-       LABELS
-   ################## */
-
