@@ -22,23 +22,22 @@ typedef struct structLabels {
 } labelList;
 
 /* cmd struct */
-typedef struct 
-{
-    char *name;
-}stringStruct;
+typedef struct {
+    char *name; 
+} stringStruct;
 
+/* a structure that contains importent variables that passes to many functions */
 typedef struct vars_s {
 	int dc; /* data counter */
 	int ic; /* instruction counter */
+	int error; /* error indicator */
 	unsigned int data[MACHINE_RAM];
 	unsigned int instructions[MACHINE_RAM];
 	boolean externFlag; /* a flag if current symbol has .extern label */
 	boolean recordedError; /* a flag if an error had encountered */
 	labelPtr symbolsTable;
-	stringStruct cmd;
-	stringStruct dir;
+	stringStruct *cmd;
+	stringStruct *dir;
 } extVars;
-
-typedef struct extVars *extPtr;
 
 #endif
