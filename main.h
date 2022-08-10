@@ -1,7 +1,3 @@
-/*****************************************
-	Ofir Krupik, Shay Yosipov
-*****************************************/
-
 /*
     This file contains constants and enums that are used all over the program.
 */
