@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
             if (preAssembler(fp, amFilename, &head))
             {
                 fp = fopen(amFilename, "r");
-                firstPass2(fp, vars); */
+                firstPass2(fp, vars);
                 fclose(fp);
             }
             free(amFilename); /* we have a pointer, hence no longer needed */
