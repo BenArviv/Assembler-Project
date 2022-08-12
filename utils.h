@@ -31,6 +31,7 @@ boolean isError(int *error);
 int findDirective(char *word, stringStruct dir[]);
 char *nextCommaWord(char *word, char *line);
 char *nextString(char *word, char *line);
+unsigned int extractBits(unsigned int word, int start, int end);
 boolean isValidNum(char *word);
 boolean isValidString(char *string);
 unsigned int encodeARE(unsigned int info, int type);

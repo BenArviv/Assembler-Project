@@ -1,0 +1,5 @@
+make --dry-run --keep-going --print-directory
+make: Entering directory '/home/gal/Assembler-Project-2'
+make: 'assembler' is up to date.
+make: Leaving directory '/home/gal/Assembler-Project-2'
+ 

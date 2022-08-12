@@ -19,7 +19,6 @@ void firstPass2(FILE *fp, extVars *vars){
 
         lineCount++;
     }
-    printf("IC: %d --- DC: %d\n", vars -> ic, vars -> dc);
     offsetAdd(vars -> symbolsTable, MEMORY_START, FALSE); /* Instruction symbols */
     offsetAdd(vars -> symbolsTable, vars -> ic + MEMORY_START, TRUE); /* Data symbols */
 }
@@ -157,8 +156,6 @@ int handleCMD(int type, char *line, extVars *vars)
 int methodDetect(char *operand, extVars *vars)
 {
     char *structPointer;
-    puts("in method detect");
-    puts(operand);
     if (isLineEnd(operand))
         return NOT_FOUND;
 
@@ -357,7 +354,6 @@ int handleDataDir(char *line, int *error, int *dc, unsigned int data[])
 
     while (!isLineEnd(line))
     {
-        puts("in handleDataDir");
         line = nextCommaWord(word, line);
         if (strlen(word))
         {
@@ -540,7 +536,6 @@ int handleExternDir(char *line, int *error, stringStruct cmd[], extVars *vars){
 
 void writeNumberToData(int num, int *dc, unsigned int data[])
 {
-    puts("in writeNumberToData");
     data[(*dc)++] = (unsigned int)num;
 }
 

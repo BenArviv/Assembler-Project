@@ -43,6 +43,7 @@ int main(int argc, char *argv[])
     boolean recordedError = FALSE;
     FILE *fp;
     MacroNode *head = NULL;
+    extPtr externList = NULL;
     for (i = 1; i < argc; i++)
     {
         filename = createFileName(argv[i], FILE_INPUT);

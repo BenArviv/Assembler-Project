@@ -1,0 +1,10 @@
+{
+    "makefile.extensionOutputFolder": "./.vscode",
+    "files.associations": {
+        "structures.h": "c",
+        "firstpass2.h": "c",
+        "utils.h": "c",
+        "labelutils.h": "c",
+        "stdio.h": "c"
+    }
+}

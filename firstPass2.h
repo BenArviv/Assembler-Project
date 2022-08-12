@@ -1,3 +1,6 @@
+#ifndef FIRSTPASS_H
+#define FIRSTPASS_H
+
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
@@ -25,3 +28,4 @@ int handleExternDir(char *line, int *error, stringStruct cmd[], extVars *vars);
 void writeNumberToData(int num, int *dc, unsigned int data[]);
 void writeStringToData(char *str, int *dc, unsigned int data[]);
 
+#endif

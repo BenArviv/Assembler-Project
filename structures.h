@@ -21,23 +21,36 @@ typedef struct structLabels {
 	labelPtr next; /* a pointer to the next label in the list */
 } labelList;
 
-/* cmd struct */
+/* cmd/dir struct */
 typedef struct {
     char *name; 
 } stringStruct;
 
-/* a structure that contains importent variables that passes to many functions */
+typedef struct ext * extPtr;
+typedef struct ext {
+	char name[LABEL_LENGTH];
+	unsigned int address;
+	extPtr next;
+	extPtr prev;
+}ext;
+
+/* a structure that contains important variables that passes to many functions */
 typedef struct vars_s {
 	int dc; /* data counter */
 	int ic; /* instruction counter */
 	int error; /* error indicator */
 	unsigned int data[MACHINE_RAM];
 	unsigned int instructions[MACHINE_RAM];
+	boolean entryFlag;
 	boolean externFlag; /* a flag if current symbol has .extern label */
 	boolean recordedError; /* a flag if an error had encountered */
 	labelPtr symbolsTable;
 	stringStruct *cmd;
 	stringStruct *dir;
+	extPtr externList;
 } extVars;
+
+
+
 
 #endif

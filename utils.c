@@ -29,14 +29,17 @@ int binToDec(int n)
 char *decToBase32(int decimal)
 {
     /* this array represents the symbols for our base-32 numbers */
-    static char key[32] = {'!', '@', '#', '$', '%', '^', '&', '*', '<', '>',
-                           'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
-                           'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v'};
+    const char base32[32] = {'!', '@', '#', '$', '%', '^', '&', '*', '<', '>',
+                          'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
+                          'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v'};
+    char *base32_seq = (char *)malloc(BASE32_SEQUENCE_LENGTH);
 
-    char *converted = (char *)malloc(sizeof(char));
+    /* To convert from binary to base 32 we can just take the 5 right binary digits and 5 left */
+    base32_seq[0] = base32[extractBits(decimal, 5, 9)];
+    base32_seq[1] = base32[extractBits(decimal, 0, 4)];
+    base32_seq[2] = '\0';
 
-    decTo32(decimal, key, converted);
-    return converted;
+    return base32_seq;
 }
 
 /* decTo32: the actual algorithm for converting a decimal number to a base-32 number */
@@ -128,7 +131,6 @@ void copyWord(char *firstWord, char *line)
 int findCMD(char *word, stringStruct cmd[])
 {
     int wordLength = strlen(word);
-    puts("in findCMD");
     if (wordLength > MAX_COMMAND_LENGTH || wordLength < MIN_COMMAND_LENGTH)
         return NOT_FOUND;
     return findStr(word,cmd,NUM_COMMANDS);
@@ -261,6 +263,17 @@ unsigned int encodeARE(unsigned int info, int type)
 void encodeInsturction(unsigned int word, unsigned int instructions[], int *ic)
 {
     instructions[((*ic)++)] = word;
+}
+
+unsigned int extractBits(unsigned int word, int start, int end)
+{
+    unsigned int result;
+    int len = end - start + 1; /* bit-sequence length */
+    unsigned int on = (int) pow(2,len) -1; /* turning bits on in desired place */
+    on <<= start; /* moving on to place */
+    result = word & on;
+    result >>= start; /* moving the sequence to LSB */
+    return result;
 }
 
 /* This function receives line number as a parameter and prints a detailed error message
