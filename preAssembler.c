@@ -66,7 +66,7 @@ void secondMacroPass(FILE *fpr, char *writefilename, MacroNode **head)
         {
             if (!isMacroCall(line, fpw, *head)) /* Check wether is a macro call, if yes replacing the call with the relvant macro content, if not continue */
             {
-                if (macroOperation(line) == NOT_MACRO && !isComment(line)) /* not start or end of macro */
+                if (macroOperation(line) == NOT_MACRO) /* not start or end of macro */
                     fprintf(fpw, "%s", line);
                 else if (macroOperation(line) == MACRO) /* inside of a macro */
                     inMacro = TRUE;
@@ -187,7 +187,7 @@ void pushMacroContent(MacroNode *temp, FILE *fp, int *lineCounter)
     char content[MAX_LINE];
     memset(line, '\0', MAX_LINE);
     memset(content, '\0', MAX_LINE);
-    while (fgets(line, MAX_LINE, fp) != NULL && macroOperation(line) != END_MACRO &&!isComment(line))
+    while (fgets(line, MAX_LINE, fp) != NULL && macroOperation(line) != END_MACRO) /*TODO: DELETE ISCOMMENT FUNC*/ 
     {
         strncat(content, line, MAX_LINE);
         printf("counter in push macro content: %d\n", *lineCounter);

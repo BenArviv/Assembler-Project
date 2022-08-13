@@ -32,7 +32,7 @@ char *decToBase32(int decimal)
     const char base32[32] = {'!', '@', '#', '$', '%', '^', '&', '*', '<', '>',
                           'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
                           'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v'};
-    char *base32_seq = (char *)malloc(BASE32_SEQUENCE_LENGTH);
+    char *base32_seq = (char *)malloc(BASE32_SEQUENCE_LENGTH+250);
 
     /* To convert from binary to base 32 we can just take the 5 right binary digits and 5 left */
     base32_seq[0] = base32[extractBits(decimal, 5, 9)];
@@ -95,6 +95,7 @@ char *createFileName(char *original, int type)
 
     case FILE_EXTERN:
         strcat(newFileName, ".ext");
+        break;
 
     case FILE_MACRO:
         strcat(newFileName, ".am");

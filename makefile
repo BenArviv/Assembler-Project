@@ -21,4 +21,7 @@ labelUtils.o: labelUtils.h
 
 
 clean:
-	rm -rf *.o assembler
+	rm -rf *.o assembler 
+
+testclean:
+	rm -rf *.am *.ent *.ext *.ob

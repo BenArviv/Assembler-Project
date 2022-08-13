@@ -1,0 +1,102 @@
+valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./assembler test
+
+==8100== Memcheck, a memory error detector
+==8100== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==8100== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==8100== Command: ./assembler test
+==8100== 
+
+--------IN FIRST PASS---------
+==8100== Conditional jump or move depends on uninitialised value(s)
+==8100==    at 0x10D9A2: offsetAdd (labelUtils.c:224)
+==8100==    by 0x10B46C: firstPass2 (firstPass2.c:22)
+==8100==    by 0x109761: main (main2.c:60)
+==8100==  Uninitialised value was created by a heap allocation
+==8100==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==8100==    by 0x10D60A: addLabel (labelUtils.c:83)
+==8100==    by 0x10B5D5: readLine (firstPass2.c:47)
+==8100==    by 0x10B3F8: firstPass2 (firstPass2.c:14)
+==8100==    by 0x109761: main (main2.c:60)
+==8100== 
+==8100== Conditional jump or move depends on uninitialised value(s)
+==8100==    at 0x10D9A2: offsetAdd (labelUtils.c:224)
+==8100==    by 0x10B490: firstPass2 (firstPass2.c:23)
+==8100==    by 0x109761: main (main2.c:60)
+==8100==  Uninitialised value was created by a heap allocation
+==8100==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==8100==    by 0x10D60A: addLabel (labelUtils.c:83)
+==8100==    by 0x10B5D5: readLine (firstPass2.c:47)
+==8100==    by 0x10B3F8: firstPass2 (firstPass2.c:14)
+==8100==    by 0x109761: main (main2.c:60)
+==8100== 
+--------IN SECOND PASS---------
+==8100== Conditional jump or move depends on uninitialised value(s)
+==8100==    at 0x10D833: entryLabel (labelUtils.c:166)
+==8100==    by 0x10C7C8: readLineSecond (secondPass.c:55)
+==8100==    by 0x10C600: secondPass (secondPass.c:15)
+==8100==    by 0x1097B7: main (main2.c:65)
+==8100==  Uninitialised value was created by a heap allocation
+==8100==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==8100==    by 0x10D60A: addLabel (labelUtils.c:83)
+==8100==    by 0x10B5D5: readLine (firstPass2.c:47)
+==8100==    by 0x10B3F8: firstPass2 (firstPass2.c:14)
+==8100==    by 0x109761: main (main2.c:60)
+==8100== 
+==8100== Conditional jump or move depends on uninitialised value(s)
+==8100==    at 0x10D130: encodeLabel (secondPass.c:271)
+==8100==    by 0x10D035: additionalWords (secondPass.c:251)
+==8100==    by 0x10CECF: encodeAddtional (secondPass.c:214)
+==8100==    by 0x10CE0F: handleCMDSecond (secondPass.c:203)
+==8100==    by 0x10C812: readLineSecond (secondPass.c:61)
+==8100==    by 0x10C600: secondPass (secondPass.c:15)
+==8100==    by 0x1097B7: main (main2.c:65)
+==8100==  Uninitialised value was created by a heap allocation
+==8100==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==8100==    by 0x10D60A: addLabel (labelUtils.c:83)
+==8100==    by 0x10B5D5: readLine (firstPass2.c:47)
+==8100==    by 0x10B3F8: firstPass2 (firstPass2.c:14)
+==8100==    by 0x109761: main (main2.c:60)
+==8100== 
+==8100== Conditional jump or move depends on uninitialised value(s)
+==8100==    at 0x10D130: encodeLabel (secondPass.c:271)
+==8100==    by 0x10D001: additionalWords (secondPass.c:246)
+==8100==    by 0x10CEEC: encodeAddtional (secondPass.c:216)
+==8100==    by 0x10CE0F: handleCMDSecond (secondPass.c:203)
+==8100==    by 0x10C812: readLineSecond (secondPass.c:61)
+==8100==    by 0x10C600: secondPass (secondPass.c:15)
+==8100==    by 0x1097B7: main (main2.c:65)
+==8100==  Uninitialised value was created by a heap allocation
+==8100==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==8100==    by 0x10D60A: addLabel (labelUtils.c:83)
+==8100==    by 0x10B5D5: readLine (firstPass2.c:47)
+==8100==    by 0x10B3F8: firstPass2 (firstPass2.c:14)
+==8100==    by 0x109761: main (main2.c:60)
+==8100== 
+extern address in dec: 103Have we recorded an error: --> 0 <-- (1 - TRUE | 0 - FALSE) 
+==8100== 
+==8100== HEAP SUMMARY:
+==8100==     in use at exit: 16,528 bytes in 2 blocks
+==8100==   total heap usage: 112 allocs, 110 frees, 65,718 bytes allocated
+==8100== 
+==8100== 472 bytes in 1 blocks are still reachable in loss record 1 of 2
+==8100==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==8100==    by 0x4A2492D: __fopen_internal (iofopen.c:65)
+==8100==    by 0x4A2492D: fopen@@GLIBC_2.2.5 (iofopen.c:86)
+==8100==    by 0x10C925: openFile (secondPass.c:93)
+==8100==    by 0x10C8C8: writeOutput (secondPass.c:78)
+==8100==    by 0x10C687: secondPass (secondPass.c:27)
+==8100==    by 0x1097B7: main (main2.c:65)
+==8100== 
+==8100== 16,056 bytes in 1 blocks are definitely lost in loss record 2 of 2
+==8100==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==8100==    by 0x1095C4: main (main2.c:40)
+==8100== 
+==8100== LEAK SUMMARY:
+==8100==    definitely lost: 16,056 bytes in 1 blocks
+==8100==    indirectly lost: 0 bytes in 0 blocks
+==8100==      possibly lost: 0 bytes in 0 blocks
+==8100==    still reachable: 472 bytes in 1 blocks
+==8100==         suppressed: 0 bytes in 0 blocks
+==8100== 
+==8100== For lists of detected and suppressed errors, rerun with: -s
+==8100== ERROR SUMMARY: 21 errors from 6 contexts (suppressed: 0 from 0)

@@ -8,7 +8,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Fri Aug 12 21:22:29 2022
+# Make data base, printed on Sat Aug 13 22:24:35 2022
 
 # Variables
 
@@ -149,9 +149,9 @@ MOTD_SHOWN = update-motd
 
 # Directories
 
-# . (device 2064, inode 43807): 32 files, no impossibilities.
+# . (device 2064, inode 43807): 35 files, no impossibilities.
 
-# 32 files, no impossibilities in 1 directories.
+# 35 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -220,7 +220,7 @@ main.h:
 # Not a target:
 makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-08-12 21:20:26.5439766
+#  Last modified 2022-08-13 22:20:39.0224386
 #  File has been updated.
 #  Successfully updated.
 
@@ -274,15 +274,21 @@ clean:
 #  Modification time never checked.
 #  File has not been updated.
 #  recipe to execute (from 'makefile', line 24):
-	rm -rf *.o assembler
+	rm -rf *.o assembler 
 
 utils.o: utils.c utils.h structures.h
- 
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
 #  recipe to execute (from 'makefile', line 17):
 	gcc -c -g -ansi -Wall -pedantic utils.c -o utils.o
+
+testclean:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'makefile', line 27):
+	rm -rf *.am *.ent *.ext *.ob
 
 # Not a target:
 labelUtils.h:
@@ -295,6 +301,7 @@ preAssembler.c:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
+ 
 
 # Not a target:
 firstPass2.c:
@@ -309,19 +316,19 @@ preAssembler.h:
 #  File has not been updated.
 
 # files hash-table stats:
-# Load=24/1024=2%, Rehash=0, Collisions=0/61=0%
+# Load=25/1024=2%, Rehash=0, Collisions=0/62=0%
 # VPATH Search Paths
 
 # No 'vpath' search paths.
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 38 / storage = 385 B / avg = 10 B
-# current buf: size = 8162 B / used = 385 B / count = 38 / avg = 10 B
+# strcache buffers: 1 (0) / strings = 42 / storage = 433 B / avg = 10 B
+# current buf: size = 8162 B / used = 433 B / count = 42 / avg = 10 B
 
-# strcache performance: lookups = 78 / hit rate = 51%
+# strcache performance: lookups = 83 / hit rate = 49%
 # hash-table stats:
-# Load=38/8192=0%, Rehash=0, Collisions=1/78=1%
-# Finished Make data base on Fri Aug 12 21:22:29 2022
+# Load=42/8192=1%, Rehash=0, Collisions=1/83=1%
+# Finished Make data base on Sat Aug 13 22:24:35 2022
 
  

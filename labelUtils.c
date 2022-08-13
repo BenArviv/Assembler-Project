@@ -96,7 +96,10 @@ labelPtr addLabel(char *name, unsigned int address, extVars *vars, boolean exter
     if (!external)
         temp->inActionStatement = external;
     else
-        vars->externFlag = TRUE;
+        {
+            vars->externFlag = TRUE;
+            temp ->IsExternal = TRUE; /* added, MAYBE WILL BE REMOVED */
+        }
 
     if ((vars->symbolsTable) == NULL)
     {

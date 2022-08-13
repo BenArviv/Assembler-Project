@@ -19,10 +19,14 @@ void additionalWords(boolean isDest, int method, char *op, extVars *vars);
 void encodeLabel(char *name, extVars *vars);
 void cmdOpernadsSecond(int type, boolean *isSrc, boolean *isDest);
 extPtr addExtern(extPtr *head, char *name, unsigned int ref);
+void freeExterns(extPtr *head);
 
 boolean writeOutput(char *filename, extVars *vars);
 FILE *openFile(char *filename, int type, extVars *vars);
 void writeOB(FILE *fp, extVars *vars);
+void writeExtern(FILE *fp, extVars *vars);
+void writeEntry(FILE *fp, extVars *vars);
+
 
 
 #endif
