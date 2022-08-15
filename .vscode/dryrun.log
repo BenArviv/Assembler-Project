@@ -1,5 +1,11 @@
-make --dry-run --keep-going --print-directory
-make: Entering directory '/home/gal/Assembler-Project-2'
-make: 'assembler' is up to date.
-make: Leaving directory '/home/gal/Assembler-Project-2'
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/home/benarviv/Assembler-Project-3'
+gcc -c -g -ansi -Wall -pedantic main2.c -o main2.o
+gcc -c -g -ansi -Wall -pedantic utils.c -o utils.o
+gcc -c -g -ansi -Wall -pedantic preAssembler.c -o preAssembler.o
+gcc -c -g -ansi -Wall -pedantic firstPass2.c -o firstPass2.o
+gcc -c -g -ansi -Wall -pedantic secondPass.c -o secondPass.o
+gcc -c -g -ansi -Wall -pedantic labelUtils.c -o labelUtils.o
+gcc -g -ansi -Wall -pedantic main2.o preAssembler.o utils.o firstPass2.o secondPass.o labelUtils.o -o assembler -lm
+make: Leaving directory '/home/benarviv/Assembler-Project-3'
  
