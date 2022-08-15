@@ -17,7 +17,7 @@ boolean isLabel(char *word, int colon, extVars *vars)
     if (wordLength > LABEL_LENGTH)
     {
         if (colon)
-            vars->error = LABEL_TOO_LONG;
+            vars -> error = LABEL_TOO_LONG;
         return FALSE;
     }
 
@@ -25,7 +25,7 @@ boolean isLabel(char *word, int colon, extVars *vars)
     if (!isalpha(*word))
     {
         if (colon)
-            vars->error = LABEL_INVALID_FIRST_CHAR;
+            vars -> error = LABEL_INVALID_FIRST_CHAR;
         return FALSE;
     }
 
@@ -44,17 +44,17 @@ boolean isLabel(char *word, int colon, extVars *vars)
         else if (!isalpha(word[i]))
         {
             if (colon)
-                vars->error = LABEL_ONLY_ALPHANUMERIC;
+                vars -> error = LABEL_ONLY_ALPHANUMERIC;
             return FALSE;
         }
     }
 
     if (!digits)
     {
-        if (findCMD(word, vars->cmd) != NOT_FOUND)
+        if (findCMD(word, vars -> cmd) != NOT_FOUND)
         {
             if (colon)
-                vars->error = LABEL_CANT_BE_COMMAND;
+                vars -> error = LABEL_CANT_BE_COMMAND;
             return FALSE;
         }
     }
@@ -62,7 +62,7 @@ boolean isLabel(char *word, int colon, extVars *vars)
     if (isRegister(word))
     {
         if (colon)
-            vars->error = LABEL_CANT_BE_REGISTER;
+            vars -> error = LABEL_CANT_BE_REGISTER;
         return FALSE;
     }
 
@@ -71,12 +71,12 @@ boolean isLabel(char *word, int colon, extVars *vars)
 
 labelPtr addLabel(char *name, unsigned int address, extVars *vars, boolean external)
 {
-    labelPtr ptr = vars->symbolsTable;
+    labelPtr ptr = vars -> symbolsTable;
     labelPtr temp;
 
-    if (isExistingLabel(vars->symbolsTable, name))
+    if (isExistingLabel(vars -> symbolsTable, name))
     {
-        vars->error = LABEL_ALREADY_EXISTS;
+        vars -> error = LABEL_ALREADY_EXISTS;
         return NULL;
     }
 
@@ -88,31 +88,31 @@ labelPtr addLabel(char *name, unsigned int address, extVars *vars, boolean exter
     }
 
     /* storing label info in temp node */
-    strcpy(temp->name, name);
-    temp->IsEntry = FALSE;
-    temp->address = address;
-    temp->IsEntry = external;
+    strcpy(temp -> name, name);
+    temp -> IsEntry = FALSE;
+    temp -> address = address;
+    temp -> IsExternal = external;
 
     if (!external)
-        temp->inActionStatement = external;
+        temp -> inActionStatement = external;
     else
         {
-            vars->externFlag = TRUE;
-            temp ->IsExternal = TRUE; /* added, MAYBE WILL BE REMOVED */
+            vars -> externFlag = TRUE;
+            temp -> IsExternal = TRUE; /* added, MAYBE WILL BE REMOVED */
         }
 
-    if ((vars->symbolsTable) == NULL)
+    if ((vars -> symbolsTable) == NULL)
     {
-        vars->symbolsTable = temp;
-        temp->next = NULL;
+        vars -> symbolsTable = temp;
+        temp -> next = NULL;
         return temp;
     }
 
-    while (ptr->next != NULL)
-        ptr = ptr->next;
+    while (ptr -> next != NULL)
+        ptr = ptr -> next;
 
-    temp->next = NULL;
-    ptr->next = temp;
+    temp -> next = NULL;
+    ptr -> next = temp;
 
     return temp;
 }
@@ -129,9 +129,9 @@ labelPtr getLabel(labelPtr head, char *name)
 {
     while (head)
     {
-        if (!strcmp(head->name, name)) /* we found a label with the given name */
+        if (!strcmp(head -> name, name)) /* we found a label with the given name */
             return head;
-        head = head->next;
+        head = head -> next;
     }
 
     return NULL;
@@ -163,7 +163,7 @@ boolean entryLabel(labelPtr head, char *name, extVars *vars)
     labelPtr temp = getLabel(head, name);
     if (temp != NULL)
     {
-        if (temp ->IsExternal)
+        if (temp -> IsExternal)
         {
             vars -> error = ENTRY_CANT_BE_EXTERN;
             return FALSE;
@@ -183,7 +183,7 @@ void freeLabels(labelPtr *head)
     while (*head)
     {
         temp = *head;
-        *head = (*head)->next;
+        *head = (*head) -> next;
         free(temp);
     }
 }
@@ -194,16 +194,16 @@ boolean deleteLabel(labelPtr *head, char *name)
     labelPtr prev;
     while (temp)
     {
-        if (!strcmp(temp->name, name))
+        if (!strcmp(temp -> name, name))
         {
-            if (!strcmp(temp->name, (*head)->name))
+            if (!strcmp(temp -> name, (*head) -> name))
             {
-                *head = (*head)->next;
+                *head = (*head) -> next;
                 free(temp);
             }
             else
             {
-                prev->next = temp->next;
+                prev -> next = temp -> next;
                 free(temp);
             }
 
@@ -211,7 +211,7 @@ boolean deleteLabel(labelPtr *head, char *name)
         }
 
         prev = temp;
-        temp = temp->next;
+        temp = temp -> next;
     }
 
     return FALSE;
@@ -221,9 +221,9 @@ void offsetAdd(labelPtr label, int num, boolean isData)
 {
     while (label)
     {
-        if (!(label->IsExternal) && (isData ^ (label->inActionStatement)))
-            label->address += num;
-        label = label->next;
+        if (!(label -> IsExternal) && (isData ^ (label -> inActionStatement)))
+            label -> address += num;
+        label = label -> next;
     }
 }
 
@@ -231,12 +231,12 @@ void print_labels(labelPtr h)
 {
     while (h)
     {
-        printf("\nname: %s, address: %d, external: %d", h->name, h->address, h->IsExternal);
-        if (h->IsExternal == 0)
-            printf(", is in action statement: %d -> ", h->inActionStatement);
+        printf("\nname: %s, address: %d, external: %d", h -> name, h -> address, h -> IsExternal);
+        if (h -> IsExternal == 0)
+            printf(", is in action statement: %d -> ", h -> inActionStatement);
         else
             printf(" -> ");
-        h = h->next;
+        h = h -> next;
     }
 
     printf("*");
