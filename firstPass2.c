@@ -12,7 +12,7 @@ void firstPass2(FILE *fp, extVars *vars){
         vars -> error = NO_ERROR;
         if (!skipLine(line))
             readLine(line, vars);
-        if (isError(&(vars ->error))){
+        if (isError(&(vars -> error))){
             vars -> recordedError = TRUE;
             write_error(lineCount, vars -> error); /* TODO: end this */
         }
@@ -94,7 +94,7 @@ int handleCMD(int type, char *line, extVars *vars)
     line = nextCommaWord(firstOp, line);
     if (!isLineEnd(firstOp))
     {
-        firstOperand = TRUE; /* found 1st operand */
+        firstOperand = TRUE; /* found first operand */
         line = nextCommaWord(secondOp, line);
         if (!isLineEnd(secondOp))
         {
@@ -340,7 +340,7 @@ int handleDir(int type, char *line, extVars *vars){
             return handleEntryDir(line, &(vars -> error)); /* actually only checks syntax */
 
         case EXTERN:
-            return handleExternDir(line, &(vars -> error) ,vars -> cmd, vars);
+            return handleExternDir(line, vars);
     }
 
     return NO_ERROR;
@@ -513,25 +513,25 @@ int handleEntryDir(char *line, int *error)
     return NO_ERROR;
 }
 
-int handleExternDir(char *line, int *error, stringStruct cmd[], extVars *vars){
+int handleExternDir(char *line, extVars *vars){
     char word[MAX_LINE];
     copyWord(word, line);
     if (isLineEnd(word)){
-        *error = EXTERN_NO_LABEL;
+        vars -> error = EXTERN_NO_LABEL;
         return ERROR;
     }
     if (!isLabel(word, FALSE, vars)){
-        *error = EXTERN_INVALID_LABEL;
+        vars -> error = EXTERN_INVALID_LABEL;
         return ERROR;
     }
     line = nextWord(line);
     if (!isLineEnd(line)){
-        *error = EXTERN_TOO_MANY_OPERANDS;
+        vars -> error = EXTERN_TOO_MANY_OPERANDS;
         return ERROR;
     }
     if (addLabel(word, EXTERNAL_DEFAULT_ADDRESS, vars, TRUE) == NULL)
         return ERROR;
-    return isError(error);
+    return isError(&(vars -> error));
 }
 
 void writeNumberToData(int num, int *dc, unsigned int data[])
