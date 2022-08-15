@@ -12,7 +12,7 @@ boolean preAssembler(FILE *fpr, char *writefilename, MacroNode **head)
         return FALSE;
     }
     return TRUE;
-} /* hi */
+}
 
 /*Performing the first pass on the file (inserting the macros into a linkedlist, copying the corresponding rows from the table to the file, etc.)*/
 boolean firstMacroPass(FILE *fp, MacroNode **head)
@@ -40,7 +40,7 @@ boolean firstMacroPass(FILE *fp, MacroNode **head)
             printf("before increasing: %d\n",lineCount);
             pushMacroContent(temp, fp, &lineCount);
                         printf("after increasing: %d\n",lineCount);
-            temp->next = *head;
+            temp -> next = *head;
             *head = temp;
         } 
     }
@@ -110,7 +110,7 @@ boolean pushMacroName(MacroNode *temp, char line[], int lineCount, MacroNode **h
         printf("ERROR (line %d): \"%s\" is a reserved or used name, Can't use this name for macro.\n", lineCount, name);
         return FALSE;
     }
-    strcpy(temp->mname, name);
+    strcpy(temp -> mname, name);
     return TRUE;
 }
 
@@ -160,9 +160,9 @@ boolean isValidName(char *name, MacroNode **head)
     }
     while (pointer != NULL)
     {
-        if (!strcmp(pointer->mname, name))
+        if (!strcmp(pointer -> mname, name))
             return FALSE;
-        pointer = pointer->next;
+        pointer = pointer -> next;
     }
     return TRUE;
 }
@@ -194,7 +194,7 @@ void pushMacroContent(MacroNode *temp, FILE *fp, int *lineCounter)
         (*lineCounter)+=1;
     }
     (*lineCounter)+=1;
-    strcpy(temp->mcontent, content);
+    strcpy(temp -> mcontent, content);
 }
 
 /* Parsing defined macro calls, returns true if the sent line is a macro call */
@@ -208,12 +208,12 @@ boolean isMacroCall(char line[], FILE *fpw, MacroNode *head)
     {
         while (pointer != NULL)
         {
-            if (!strcmp(pointer->mname, Mname))
+            if (!strcmp(pointer -> mname, Mname))
             {
-                fprintf(fpw, "%s", pointer->mcontent);
+                fprintf(fpw, "%s", pointer -> mcontent);
                 return TRUE;
             }
-            pointer = pointer->next;
+            pointer = pointer -> next;
         }
     }
     return FALSE;
@@ -238,7 +238,7 @@ void freeMacroNodes(MacroNode **head)
     while (*head != NULL)
     {
         tempNode = *head;
-        *head = (*head)->next;
+        *head = (*head) -> next;
         free(tempNode);
     }
 }
@@ -249,7 +249,7 @@ void printMacroTable(MacroNode *head)
     MacroNode *temp = head;
     while (temp != NULL)
     {
-        printf("\nName: %s\nContent:\n%s\n", temp->mname, temp->mcontent);
-        temp = temp->next;
+        printf("\nName: %s\nContent:\n%s\n", temp -> mname, temp -> mcontent);
+        temp = temp -> next;
     }
 }
