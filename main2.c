@@ -38,15 +38,15 @@ int main(int argc, char *argv[])
                                {".extern"}};
 
     extVars *vars = (extVars *)malloc(sizeof(extVars));
-    vars->ic = 0;
-    vars->dc = 0;
-    vars->externFlag = FALSE;
-    vars->entryFlag = FALSE;
-    vars->recordedError = FALSE;
-    vars->symbolsTable = NULL;
-    vars->cmd = cmdInit;
-    vars->dir = dataInit;
-    vars->externList = NULL;
+    vars -> ic = 0;
+    vars -> dc = 0;
+    vars -> externFlag = FALSE;
+    vars -> entryFlag = FALSE;
+    vars -> recordedError = FALSE;
+    vars -> symbolsTable = NULL;
+    vars -> cmd = cmdInit;
+    vars -> dir = dataInit;
+    vars -> externList = NULL;
     for (i = 1; i < argc; i++)
     {
         filename = createFileName(argv[i], FILE_INPUT);
@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
                 fp = fopen(amFilename, "r");
                 firstPass2(fp, vars);
 
-                if (!(vars->recordedError))
+                if (!(vars -> recordedError))
                 {
                     rewind(fp);
                     secondPass(fp, argv[i], vars);
@@ -72,8 +72,8 @@ int main(int argc, char *argv[])
             printf("CANNOT_OPEN_FILE\n");
         free(filename);
     }
-    printf("Have we recorded an error: --> %d <-- (1 - TRUE | 0 - FALSE) \n", vars->recordedError);
+    printf("Have we recorded an error: --> %d <-- (1 - TRUE | 0 - FALSE) \n", vars -> recordedError);
     freeMacroNodes(&head);
-    freeLabels(&(vars->symbolsTable));
+    freeLabels(&(vars -> symbolsTable));
     return 0;
 }
