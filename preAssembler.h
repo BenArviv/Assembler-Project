@@ -24,16 +24,16 @@ enum macrotypes
 };
 
 /* Prototypes */
-boolean preAssembler(FILE *fpr, char *writefilename, MacroNode **head);
-boolean firstMacroPass(FILE *fp, MacroNode **head);
 void secondMacroPass(FILE *fpr, char *writefilename, MacroNode **head);
-int macroOperation(char line[]);
-boolean pushMacroName(MacroNode *temp, char line[], int lineCount, MacroNode **head);
-void pushMacroContent(MacroNode *temp, FILE *fp, int *lineCounter);
-boolean isMacroCall(char line[], FILE *fpw, MacroNode *head);
-MacroNode *createNode();
 void freeMacroNodes(MacroNode **head);
+void pushMacroContent(MacroNode *temp, FILE *fp, int *lineCounter);
+int macroOperation(char line[]);
+boolean isMacroCall(char line[], FILE *fpw, MacroNode *head);
 boolean isValidName(char *name, MacroNode **head);
 boolean isComment(char *line);
+boolean preAssembler(FILE *fpr, char *writefilename, MacroNode **head);
+boolean firstMacroPass(FILE *fp, MacroNode **head);
+boolean pushMacroName(MacroNode *temp, char line[], int lineCount, MacroNode **head);
+MacroNode *createNode();
 
 void printMacroTable(MacroNode *head);
