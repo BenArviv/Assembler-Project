@@ -2,32 +2,32 @@
 
 void secondPass(FILE *fp, char *filename, extVars *vars)
 {
-    puts("--------IN SECOND PASS---------");
     char line[MAX_LINE];
     int lineCount = 1;
-    vars->ic = 0;
+    vars -> ic = 0;
+    puts("--------IN SECOND PASS---------");
 
     while (fgets(line, MAX_LINE, fp))
     {
-        vars->error = NO_ERROR;
+        vars -> error = NO_ERROR;
         if (!skipLine(line))
         {
             readLineSecond(line, vars);
         }
-        if (isError(&(vars->error)))
+        if (isError(&(vars -> error)))
         {
-            vars->recordedError = TRUE;
-            write_error(lineCount, vars->error);
+            vars -> recordedError = TRUE;
+            write_error(lineCount, vars -> error);
         }
 
         lineCount++;
     }
-    if (!(vars->recordedError)) /* creating output only if we havn't recorded errors */
+    if (!(vars -> recordedError)) /* creating output only if we havn't recorded errors */
     {
         writeOutput(filename, vars);
     }
-    freeLabels(&(vars->symbolsTable));
-    freeExterns(&(vars->externList));
+    freeLabels(&(vars -> symbolsTable));
+    freeExterns(&(vars -> externList));
     
     /* TODO: Free labels and externs */
 }
@@ -37,8 +37,8 @@ void readLineSecond(char *line, extVars *vars)
     int dirType;
     int cmdType;
     char word[MAX_LINE];         /* current word to analyze */
-    line = skipWhiteChars(line); /* skipping to the first non-Whitechar*/
-    if (isLineEnd(line))         /* Skipping blank lines */
+    line = skipWhiteChars(line); /* skipping to the first non-white char*/
+    if (isLineEnd(line))         /* bkipping blank lines */
         return;
     copyWord(word, line);           /* copying the first word from line */
     if (isLabel(word, COLON, vars)) /* if it's a label we are skipping this word */
@@ -46,16 +46,16 @@ void readLineSecond(char *line, extVars *vars)
         line = nextWord(line);
         copyWord(word, line);
     }
-    if ((dirType = findDirective(word, vars->dir)) != NOT_FOUND)
+    if ((dirType = findDirective(word, vars -> dir)) != NOT_FOUND)
     {
         line = nextWord(line);
         if (dirType == ENTRY)
         {
             copyWord(word, line);
-            entryLabel(vars->symbolsTable, word, vars);
+            entryLabel(vars -> symbolsTable, word, vars);
         }
     }
-    else if ((cmdType = findCMD(word, vars->cmd)) != NOT_FOUND)
+    else if ((cmdType = findCMD(word, vars -> cmd)) != NOT_FOUND)
     {
         line = nextWord(line);
         handleCMDSecond(cmdType, line, vars);
@@ -68,12 +68,12 @@ boolean writeOutput(char *filename, extVars *vars)
     fp = openFile(filename, FILE_OBJECT, vars);
     writeOB(fp, vars);
 
-    if (vars->externFlag)
+    if (vars -> externFlag)
     {
         fp = openFile(filename, FILE_EXTERN, vars);
         writeExtern(fp, vars);
     }
-    if (vars ->entryFlag)
+    if (vars -> entryFlag)
     {
         fp = openFile(filename, FILE_ENTRY, vars);
         writeEntry(fp,vars);
@@ -95,7 +95,7 @@ FILE *openFile(char *filename, int type, extVars *vars)
 
     if (fp == NULL)
     {
-        vars->error = CANNOT_OPEN_FILE;
+        vars -> error = CANNOT_OPEN_FILE;
         return NULL;
     }
     return fp;
@@ -104,15 +104,15 @@ FILE *openFile(char *filename, int type, extVars *vars)
 void writeExtern(FILE *fp, extVars *vars)
 {
     char *address;
-    extPtr ptr = vars->externList;
-    printf("extern address in dec: %d", ptr -> address);
+    extPtr ptr = vars -> externList;
+    printf("extern address in dec: %d\n", ptr -> address);
     do
     {
-        address = decToBase32(ptr->address);
-        fprintf(fp, "%s\t%s\n", ptr->name, address);
+        address = decToBase32(ptr -> address);
+        fprintf(fp, "%s\t%s\n", ptr -> name, address);
         free(address);
-        ptr = ptr->next;
-    } while (ptr != vars->externList);
+        ptr = ptr -> next;
+    } while (ptr != vars -> externList);
     fclose(fp);
 }
 
@@ -122,13 +122,13 @@ void writeEntry(FILE *fp, extVars *vars)
     labelPtr ptr = vars -> symbolsTable;
     while (ptr != NULL)
     {
-        if (ptr ->IsEntry && ptr -> address != 0)
+        if (ptr -> IsEntry && ptr -> address != 0)
         {
             address = decToBase32(ptr -> address);
             fprintf(fp, "%s\t%s\n", ptr -> name, address);
             free(address);
         }
-        ptr = ptr->next;       
+        ptr = ptr -> next;       
     }
     
 }
@@ -137,27 +137,27 @@ void writeOB(FILE *fp, extVars *vars)
 {
     unsigned int address = MEMORY_START;
     int i;
-    char *firstCol = decToBase32(vars->ic);
-    char *secondCol = decToBase32(vars->dc);
-    fprintf(fp, "%s\t%s\n\n", firstCol, secondCol);
+    char *firstCol = decToBase32(vars -> ic);
+    char *secondCol = decToBase32(vars -> dc);
+    printCounters(fp, firstCol, secondCol);
     free(firstCol);
     free(secondCol);
 
     /* insturctions */
-    for (i = 0; i < vars->ic; i++, address++)
+    for (i = 0; i < vars -> ic; i++, address++)
     {
         firstCol = decToBase32(address);
-        secondCol = decToBase32(vars->instructions[i]);
+        secondCol = decToBase32(vars -> instructions[i]);
 
         fprintf(fp, "%s\t%s\n", firstCol, secondCol);
         free(firstCol);
         free(secondCol);
     }
     /* data */
-    for (i = 0; i < vars->dc; i++, address++)
+    for (i = 0; i < vars -> dc; i++, address++)
     {
         firstCol = decToBase32(address);
-        secondCol = decToBase32(vars->data[i]);
+        secondCol = decToBase32(vars -> data[i]);
 
         fprintf(fp, "%s\t%s\n", firstCol, secondCol);
         free(firstCol);
@@ -166,7 +166,18 @@ void writeOB(FILE *fp, extVars *vars)
     fclose(fp);
 }
 
-/* Handles CMDs for 2nd pass */
+void printCounters(FILE *fp, char *firstCol, char *secondCol){
+    int i = 0, j = 0; /* determines from where to print the number */
+
+    if (*firstCol == '!')
+        i++;
+    if (*secondCol == '!')
+        j++;
+    
+    fprintf(fp, "%s\t%s\n", (firstCol + i), (secondCol + j));
+}
+
+/* handles CMDs for 2nd pass */ 
 int handleCMDSecond(int cmdType, char *line, extVars *vars)
 {
     char firstOp[MAX_LINE];  /* first cmd operand */
@@ -181,9 +192,9 @@ int handleCMDSecond(int cmdType, char *line, extVars *vars)
     cmdOpernadsSecond(cmdType, &isSrc, &isDest);
 
     if (isSrc)
-        srcMethod = extractBits(vars->instructions[vars->ic], SRC_METHOD_START_POS, SRC_METHOD_END_POS);
+        srcMethod = extractBits(vars -> instructions[vars -> ic], SRC_METHOD_START_POS, SRC_METHOD_END_POS);
     if (isDest)
-        destMethod = extractBits(vars->instructions[vars->ic], DEST_METHOD_START_POS, DEST_METHOD_END_POS);
+        destMethod = extractBits(vars -> instructions[vars -> ic], DEST_METHOD_START_POS, DEST_METHOD_END_POS);
 
     if (isSrc || isDest)
     {
@@ -199,7 +210,7 @@ int handleCMDSecond(int cmdType, char *line, extVars *vars)
             src = NULL;
         }
     }
-    vars->ic++;
+    vars -> ic++;
     return encodeAddtional(src, dest, isSrc, isDest, srcMethod, destMethod, vars);
 }
 
@@ -207,7 +218,7 @@ int handleCMDSecond(int cmdType, char *line, extVars *vars)
 int encodeAddtional(char *src, char *dest, boolean isSrc, boolean isDest, int srcMethod, int destMethod, extVars *vars)
 {
     if (isSrc && isDest && srcMethod == METHOD_REGISTER && destMethod == METHOD_REGISTER)
-        encodeInsturction((registerOperand(FALSE, src) | registerOperand(TRUE, dest)), vars->instructions, &(vars->ic));
+        encodeInsturction((registerOperand(FALSE, src) | registerOperand(TRUE, dest)), vars -> instructions, &(vars -> ic));
     else
     {
         if (isSrc)
@@ -215,7 +226,7 @@ int encodeAddtional(char *src, char *dest, boolean isSrc, boolean isDest, int sr
         if (isDest)
             additionalWords(TRUE, destMethod, dest, vars);
     }
-    return isError(&(vars->error));
+    return isError(&(vars -> error));
 }
 
 /* additional words for a register operand */
@@ -239,7 +250,7 @@ void additionalWords(boolean isDest, int method, char *op, extVars *vars)
     case METHOD_IMMEDIATE:
         word = (unsigned int)atoi(op + 1);
         word = encodeARE(word, ABSOLUTE);
-        encodeInsturction(word, vars->instructions, &(vars->ic));
+        encodeInsturction(word, vars -> instructions, &(vars -> ic));
         break;
 
     case METHOD_DIRECT:
@@ -252,36 +263,36 @@ void additionalWords(boolean isDest, int method, char *op, extVars *vars)
         *temp++ = '.';
         word = (unsigned int)atoi(temp);
         word = encodeARE(word, ABSOLUTE);
-        encodeInsturction(word, vars->instructions, &(vars->ic));
+        encodeInsturction(word, vars -> instructions, &(vars -> ic));
         break;
-    case METHOD_REGISTER:
+    case METHOD_REGISTER: 
         word = registerOperand(isDest, op);
-        encodeInsturction(word, vars->instructions, &(vars->ic));
+        encodeInsturction(word, vars -> instructions, &(vars -> ic));
     }
 }
 
 void encodeLabel(char *name, extVars *vars)
 {
-    unsigned int word; /* to be encoded*/
+    unsigned int word; /* to be encoded */
 
-    if (isExistingLabel(vars->symbolsTable, name))
+    if (isExistingLabel(vars -> symbolsTable, name))
     {
-        word = getLabelAddress(vars->symbolsTable, name); /* getting address */
+        word = getLabelAddress(vars -> symbolsTable, name); /* getting address */
 
-        if (isLabelExternal(vars->symbolsTable, name))
+        if (isLabelExternal(vars -> symbolsTable, name))
         {
-            addExtern(&(vars->externList), name, vars->ic + MEMORY_START);
+            addExtern(&(vars -> externList), name, vars -> ic + MEMORY_START);
             word = encodeARE(word, EXTERNAL);
         }
         else
             word = encodeARE(word, RELOCATABLE);
 
-        encodeInsturction(word, vars->instructions, &(vars->ic));
+        encodeInsturction(word, vars -> instructions, &(vars -> ic));
     }
     else
     {
-        vars->ic++;
-        vars->error = COMMAND_LABEL_DOES_NOT_EXIST;
+        vars -> ic++;
+        vars -> error = COMMAND_LABEL_DOES_NOT_EXIST;
     }
 }
 /* sets param flags to true or false for each command */
@@ -332,20 +343,20 @@ extPtr addExtern(extPtr *head, char *name, unsigned int ref)
         puts("FATAL ERROR, Cannot allocate memory\n");
         exit(1);
     }
-    temp->address = ref;
-    strcpy(temp->name, name);
+    temp -> address = ref;
+    strcpy(temp -> name, name);
     if (!(*head))
     {
         *head = temp;
-        temp->next = temp;
-        temp->prev = temp;
+        temp -> next = temp;
+        temp -> prev = temp;
         return temp;
     }
 
-    ((*head)->prev)->next = temp;
-    temp->next = t;
-    temp->prev = t->prev;
-    (*head)->prev = temp;
+    ((*head) -> prev) -> next = temp;
+    temp -> next = t;
+    temp -> prev = t -> prev;
+    (*head) -> prev = temp;
 
     return temp;
 }
@@ -354,13 +365,13 @@ void freeExterns(extPtr *head)
     extPtr ptr = *head;
     if (ptr != NULL)
     {
-        unsigned int prev = ((*head)->prev)->address;
+        unsigned int prev = ((*head) -> prev) -> address;
         unsigned int curr = 0;
         do
         {
             ptr = *head;
             curr = ptr -> address;
-            *head = (*head)->next;
+            *head = (*head) -> next;
             free(ptr);
         } while (curr != prev);
         
