@@ -26,13 +26,13 @@ typedef struct {
     char *name; 
 } stringStruct;
 
-typedef struct ext * extPtr;
+typedef struct ext *extPtr;
 typedef struct ext {
 	char name[LABEL_LENGTH];
 	unsigned int address;
 	extPtr next;
 	extPtr prev;
-}ext;
+} ext;
 
 /* a structure that contains important variables that passes to many functions */
 typedef struct vars_s {
