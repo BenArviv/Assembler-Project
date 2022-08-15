@@ -34,7 +34,7 @@ char *decToBase32(int decimal)
                           'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v'};
     char *base32_seq = (char *)malloc(BASE32_SEQUENCE_LENGTH+250);
 
-    /* To convert from binary to base 32 we can just take the 5 right binary digits and 5 left */
+    /* to convert from binary to base 32 we can just take the 5 right binary digits and 5 left */
     base32_seq[0] = base32[extractBits(decimal, 5, 9)];
     base32_seq[1] = base32[extractBits(decimal, 0, 4)];
     base32_seq[2] = '\0';
@@ -215,7 +215,7 @@ boolean isError(int *error)
 
 int findDirective(char *word, stringStruct dir[])
 {
-    if(word==NULL || *word !='.')
+    if(word == NULL || *word !='.')
         return NOT_FOUND;
     return findStr(word,dir,NUM_DIRECTIVES);
 }
@@ -270,7 +270,7 @@ unsigned int extractBits(unsigned int word, int start, int end)
 {
     unsigned int result;
     int len = end - start + 1; /* bit-sequence length */
-    unsigned int on = (int) pow(2,len) -1; /* turning bits on in desired place */
+    unsigned int on = (int) pow(2, len) - 1; /* turning bits on in desired place */
     on <<= start; /* moving on to place */
     result = word & on;
     result >>= start; /* moving the sequence to LSB */
