@@ -180,10 +180,10 @@ boolean entryLabel(labelPtr head, char *name, extVars *vars)
 /* PROBLEMATIC WITH VALGRIND */ 
 void freeLabels(labelPtr *head)
 {
-    labelPtr *temp;
+    labelPtr temp;
     while (*head != NULL)
     {
-        temp = (*head);
+        temp = *head;
         *head = (*head) -> next;
         free(temp);
     }

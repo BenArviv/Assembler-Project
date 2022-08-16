@@ -79,7 +79,7 @@ boolean writeOutput(char *filename, extVars *vars)
         writeEntry(fp,vars);
     }
     
-    
+    fclose(fp);
 
     return NO_ERROR;
 }

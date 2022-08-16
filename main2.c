@@ -73,8 +73,8 @@ int main(int argc, char *argv[])
         free(filename);
     }
     printf("Have we recorded an error: --> %d <-- (1 - TRUE | 0 - FALSE) \n", vars -> recordedError);
-    free(vars);
-    freeMacroNodes(&head);
     freeLabels(&(vars -> symbolsTable));
+    freeMacroNodes(&head);
+    free(vars);
     return 0;
 }
