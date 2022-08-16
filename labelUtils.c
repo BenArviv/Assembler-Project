@@ -177,12 +177,13 @@ boolean entryLabel(labelPtr head, char *name, extVars *vars)
     return FALSE;
 }
 
+/* PROBLEMATIC WITH VALGRIND */ 
 void freeLabels(labelPtr *head)
 {
-    labelPtr temp;
-    while (*head)
+    labelPtr *temp;
+    while (*head != NULL)
     {
-        temp = *head;
+        temp = (*head);
         *head = (*head) -> next;
         free(temp);
     }

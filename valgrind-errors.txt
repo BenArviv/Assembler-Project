@@ -1,4 +1,4 @@
-valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./assembler test
+valgrind --leak-check=full -s --show-leak-kinds=all --track-origins=yes ./assembler test
 
 ==8100== Memcheck, a memory error detector
 ==8100== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.

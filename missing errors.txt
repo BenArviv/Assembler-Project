@@ -9,8 +9,6 @@ input: .data 943 .data
 output: ERROR (line 49): .data expected a comma after a numeric parameter.
 
 MISSING ERRORS:
-* undefined labels (first pass)
-	example: add A, B (A and B haven't been defined at all) 
 * line length exceeds max line length (80)
 	example: K2: .string "I am a very long string that will surely exceed the maximum length of a line"
 * entry label without definition (second pass)

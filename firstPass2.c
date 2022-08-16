@@ -112,6 +112,12 @@ int handleCMD(int type, char *line, extVars *vars)
                     vars -> error = COMMAND_UNEXPECTED_CHAR;
                     return ERROR;
                 }
+                if (*secondOp == ',')
+                {
+                    vars -> error = COMMAND_COMMA_IN_A_ROW;
+                    return ERROR;
+                }
+                
                 secondOperand = TRUE;
             }
         }
@@ -452,8 +458,20 @@ int handleStructDir(char *line, int *error, int *dc, unsigned int data[])
                     line = nextCommaWord(word, line);
                     if (!isLineEnd(word))
                     {
+                        if (*word == ',')
+                        {
+                            *error = STRUCT_COMMA_IN_A_ROW;
+                            return ERROR;
+                        }
                         if (isValidString(word))
                         {
+                            line = skipWhiteChars(line);
+                            if (!isLineEnd(line))
+                            {
+                                *error = STRUCT_EXTRA_CHARS;
+                                return ERROR;
+                            }
+                            
                             word[strlen(word) - 1] = '\0';
                             writeStringToData(word + 1, dc, data);
                         }

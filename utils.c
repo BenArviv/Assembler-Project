@@ -163,7 +163,6 @@ char *nextWord(char *line)
     return line;
     
 }
-
 char *nextCommaWord(char *word, char *line)
 {
     if(isLineEnd(line))
@@ -416,7 +415,7 @@ void write_error(int line_num, int error)
             break;
 
         case COMMAND_TOO_MANY_OPERANDS:
-            fprintf(stderr, "command can't have more than 2 operands.\n");
+            fprintf(stderr, "extra charaters at the end, command can't have more than 2 operands.\n");
 
             break;
 
@@ -431,7 +430,7 @@ void write_error(int line_num, int error)
             break;
 
         case COMMAND_INVALID_OPERANDS_METHODS:
-            fprintf(stderr, "operands' addressing methods do not match command requirements.\n");
+            fprintf(stderr, "operands addressing methods do not match command requirements.\n");
 
             break;
 
@@ -447,6 +446,21 @@ void write_error(int line_num, int error)
 
         case COMMAND_LABEL_DOES_NOT_EXIST:
             fprintf(stderr, "label does not exist.\n");
+
+            break;
+
+        case STRUCT_COMMA_IN_A_ROW:
+            fprintf(stderr, "multiple consecutive commas in struct.\n");
+
+            break;
+        
+        case STRUCT_EXTRA_CHARS:
+            fprintf(stderr, "extra characters at the end of struct.\n");
+
+            break;
+
+        case COMMAND_COMMA_IN_A_ROW:
+            fprintf(stderr, "multiple consecutive commas in command\n");
 
             break;
 
