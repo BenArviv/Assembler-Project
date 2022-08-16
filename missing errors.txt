@@ -1,0 +1,23 @@
+
+input: .struct 2, , "2"
+output: ERROR (line 8): .struct second parameter is not a string.
+
+input: cmp K, , #-6
+output: ERROR (line 18): command can't have more than 2 operands.
+
+input: .data 943 .data
+output: ERROR (line 49): .data expected a comma after a numeric parameter.
+
+MISSING ERRORS:
+* undefined labels (first pass)
+	example: add A, B (A and B haven't been defined at all) 
+* line length exceeds max line length (80)
+	example: K2: .string "I am a very long string that will surely exceed the maximum length of a line"
+* entry label without definition (second pass)
+	example: .entry label (label hasn't been defined nowhere in file)
+* undefined labels (second pass)
+	example: mov P, Q (P and Q haven't been defined at all)
+
+
+
+
