@@ -1,6 +1,7 @@
 #include "firstPass2.h"
 #include "labelUtils.h"
 
+/* firstPass: main first pass routine for file.am */
 void firstPass2(FILE *fp, extVars *vars){
     char line[MAX_LINE];
     int lineCount = 1;
@@ -85,6 +86,7 @@ void readLine(char *line, extVars *vars){
     }
 }
 
+/*  */
 int handleCMD(int type, char *line, extVars *vars)
 {
     boolean firstOperand = FALSE, secondOperand = FALSE;
