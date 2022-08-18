@@ -37,18 +37,10 @@ int main(int argc, char *argv[])
                                {".entry"},
                                {".extern"}};
 
-    extVars *vars = (extVars *)malloc(sizeof(extVars));
-    vars -> ic = 0;
-    vars -> dc = 0;
-    vars -> externFlag = FALSE;
-    vars -> entryFlag = FALSE;
-    vars -> recordedError = FALSE;
-    vars -> symbolsTable = NULL;
-    vars -> cmd = cmdInit;
-    vars -> dir = dataInit;
-    vars -> externList = NULL;
+    extVars *vars;
     for (i = 1; i < argc; i++)
     {
+        refactor(vars)
         filename = createFileName(argv[i], FILE_INPUT);
         fp = fopen(filename, "r");
         if (fp != NULL)
@@ -70,11 +62,11 @@ int main(int argc, char *argv[])
         }
         else
             printf("CANNOT_OPEN_FILE\n");
+        printf("Have we recorded an error: --> %d <-- (1 - TRUE | 0 - FALSE) \n", vars -> recordedError);
+        freeLabels(&(vars -> symbolsTable));
+        freeMacroNodes(&head);
         free(filename);
+        free(vars);
     }
-    printf("Have we recorded an error: --> %d <-- (1 - TRUE | 0 - FALSE) \n", vars -> recordedError);
-    freeLabels(&(vars -> symbolsTable));
-    freeMacroNodes(&head);
-    free(vars);
     return 0;
 }

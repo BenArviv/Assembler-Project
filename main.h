@@ -57,6 +57,21 @@
 
 #define MACHINE_RAM 2000
 
+/**************************************** Macros ****************************************/
+
+/* Vars struct variable refactor */
+#define refactor(a)\
+    a = (extVars *)malloc(sizeof(extVars));\
+    a -> ic = 0;\
+    a -> dc = 0;\
+    a -> externFlag = FALSE;\
+    a -> entryFlag = FALSE;\
+    a -> recordedError = FALSE;\
+    a -> symbolsTable = NULL;\
+    a -> cmd = cmdInit;\
+    a -> dir = dataInit;\
+    a -> externList = NULL;
+
 /**************************************** Enums ****************************************/
 
 /* Directives types */
