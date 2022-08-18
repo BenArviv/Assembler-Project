@@ -1,8 +1,11 @@
+/*********************** AUTHORS **************************
+ * GAL ISRAEL
+ * BEN ARVIV
+**************************************************/
+
 #include "utils.h"
 #include "main.h"
 
-/* 80 + \n + \0 */
-#define MAX_LINE 82
 
 /* Sum of defined blacklist */
 #define BLACKLIST 30
@@ -30,10 +33,8 @@ void pushMacroContent(MacroNode *temp, FILE *fp, int *lineCounter);
 int macroOperation(char line[]);
 boolean isMacroCall(char line[], FILE *fpw, MacroNode *head);
 boolean isValidName(char *name, MacroNode **head);
-boolean isComment(char *line);
 boolean preAssembler(FILE *fpr, char *writefilename, MacroNode **head);
 boolean firstMacroPass(FILE *fp, MacroNode **head);
 boolean pushMacroName(MacroNode *temp, char line[], int lineCount, MacroNode **head);
 MacroNode *createNode();
 
-void printMacroTable(MacroNode *head);

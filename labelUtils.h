@@ -1,8 +1,13 @@
+/*********************** AUTHORS **************************
+ * GAL ISRAEL
+ * BEN ARVIV
+**************************************************/
+
 #ifndef LABELS_H
 #define LABELS_H
 
 #include "structures.h"
-#include "firstPass2.h"
+#include "firstPass.h"
 
 /* PROTOTYPES */
 void freeLabels(labelPtr *head);
@@ -16,6 +21,5 @@ boolean deleteLabel(labelPtr *head, char *name);
 labelPtr getLabel(labelPtr head, char *name);
 labelPtr addLabel(char *name, unsigned int address, extVars *vars, boolean external);
 
-void print_labels(labelPtr h);
 
 #endif

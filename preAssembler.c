@@ -1,3 +1,8 @@
+/*********************** AUTHORS **************************
+ * GAL ISRAEL
+ * BEN ARVIV
+**************************************************/
+
 #include "preAssembler.h"
 
 /* runs the preAssembler and returns TRUE if succeeded (no macro syntax issues) */
@@ -114,8 +119,6 @@ boolean pushMacroName(MacroNode *temp, char line[], int lineCount, MacroNode **h
     return TRUE;
 }
 
-/* Prototype for a blacklist, Perhaps it will be better to implement with struct */
-/* TODO: Should we check lower/UPPER case letters? */
 boolean isValidName(char *name, MacroNode **head)
 {
     int i = 0;
@@ -167,18 +170,6 @@ boolean isValidName(char *name, MacroNode **head)
     return TRUE;
 }
 
-/* Returns true if a line starts with ';' */
-boolean isComment(char *line)
-{
-    char firstWord[MAX_LINE];
-    memset(firstWord, '\0', MAX_LINE);
-    if (sscanf(line, "%s", firstWord))
-    {
-        if (firstWord[0] == ';')
-            return TRUE;
-    }
-    return FALSE;
-}
 
 /* Pushes the macro contents into macro node */
 void pushMacroContent(MacroNode *temp, FILE *fp, int *lineCounter)
@@ -198,7 +189,6 @@ void pushMacroContent(MacroNode *temp, FILE *fp, int *lineCounter)
 }
 
 /* Parsing defined macro calls, returns true if the sent line is a macro call */
-/* TODO: Check if there could be a word or a label or any sentence before the macro, if so, change implementaion */
 boolean isMacroCall(char line[], FILE *fpw, MacroNode *head)
 {
     char Mname[MAX_LINE];
@@ -243,13 +233,3 @@ void freeMacroNodes(MacroNode **head)
     }
 }
 
-/*Prints the macro table for inside use.*/
-void printMacroTable(MacroNode *head)
-{
-    MacroNode *temp = head;
-    while (temp != NULL)
-    {
-        printf("\nName: %s\nContent:\n%s\n", temp -> mname, temp -> mcontent);
-        temp = temp -> next;
-    }
-}

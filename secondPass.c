@@ -1,3 +1,8 @@
+/*********************** AUTHORS **************************
+ * GAL ISRAEL
+ * BEN ARVIV
+**************************************************/
+
 #include "secondPass.h"
 
 void secondPass(FILE *fp, char *filename, extVars *vars)
@@ -5,11 +10,10 @@ void secondPass(FILE *fp, char *filename, extVars *vars)
     char line[MAX_LINE];
     int lineCount = 1;
     vars -> ic = 0;
-    puts("--------IN SECOND PASS---------");
 
     while (fgets(line, MAX_LINE, fp))
     {
-        vars -> error = NO_ERROR;
+        vars -> error = OK;
         if (!skipLine(line))
         {
             readLineSecond(line, vars);
@@ -17,7 +21,7 @@ void secondPass(FILE *fp, char *filename, extVars *vars)
         if (isError(&(vars -> error)))
         {
             vars -> recordedError = TRUE;
-            write_error(lineCount, vars -> error);
+            printError(lineCount, vars -> error);
         }
 
         lineCount++;
@@ -81,7 +85,7 @@ boolean writeOutput(char *filename, extVars *vars)
     
     fclose(fp);
 
-    return NO_ERROR;
+    return OK;
 }
 
 FILE *openFile(char *filename, int type, extVars *vars)

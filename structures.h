@@ -1,10 +1,14 @@
+/*********************** AUTHORS **************************
+ * GAL ISRAEL
+ * BEN ARVIV
+**************************************************/
+
 #ifndef STRUCTURES_H
 
 #define STRUCTURES_H
 
 #include "main.h"
-#define MAX_LINE 82 /* max line length */
-#define MAX_SYMBOL 31 /* max symbol length */
+
 
 
 /* boolean type FALSE = 0 | TRUE = 1 */

@@ -1,3 +1,8 @@
+/*********************** AUTHORS **************************
+ * GAL ISRAEL
+ * BEN ARVIV
+**************************************************/
+
 #ifndef UTILS_H
 
 #define UTILS_H
@@ -17,7 +22,7 @@
 void decTo32(int, char[], char *);
 void copyWord(char *word, char *line);
 void encodeInsturction(unsigned int word, unsigned int instructions[], int *ic);
-void write_error(int line_num, int error);
+void printError(int line_num, int error);
 char *decToBase32(int);
 char *binToBase32(int);
 char *createFileName(char *original, int type);

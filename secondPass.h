@@ -1,3 +1,8 @@
+/*********************** AUTHORS **************************
+ * GAL ISRAEL
+ * BEN ARVIV
+**************************************************/
+
 #ifndef SECONDPASS_H
 #define SECONDPASS_H
 
@@ -6,7 +11,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <math.h>
-#include "firstPass2.h"
+#include "firstPass.h"
 #include "labelUtils.h"
 #include "utils.h"
 

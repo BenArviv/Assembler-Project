@@ -1,11 +1,11 @@
-assembler: main2.o preAssembler.o utils.o firstPass2.o secondPass.o labelUtils.o
-	gcc -g -ansi -Wall -pedantic main2.o preAssembler.o utils.o firstPass2.o secondPass.o labelUtils.o -o assembler -lm
+assembler: main.o preAssembler.o utils.o firstPass.o secondPass.o labelUtils.o
+	gcc -g -ansi -Wall -pedantic main.o preAssembler.o utils.o firstPass.o secondPass.o labelUtils.o -o assembler -lm
 
-main2.o: main2.c main.h labelUtils.h
-	gcc -c -g -ansi -Wall -pedantic main2.c -o main2.o
+main.o: main.c main.h labelUtils.h
+	gcc -c -g -ansi -Wall -pedantic main.c -o main.o
 
-firstPass2.o: firstPass2.c firstPass2.h labelUtils.h
-	gcc -c -g -ansi -Wall -pedantic firstPass2.c -o firstPass2.o
+firstPass.o: firstPass.c firstPass.h labelUtils.h
+	gcc -c -g -ansi -Wall -pedantic firstPass.c -o firstPass.o
 
 secondPass.o: secondPass.c secondPass.h
 	gcc -c -g -ansi -Wall -pedantic secondPass.c -o secondPass.o

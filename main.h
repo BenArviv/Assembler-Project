@@ -1,3 +1,8 @@
+/*********************** AUTHORS **************************
+ * GAL ISRAEL
+ * BEN ARVIV
+**************************************************/
+
 /*
     This file contains constants and enums that are used all over the program.
 */
@@ -12,12 +17,13 @@
 #define EMPTY_WORD 0
 #define EXTERNAL_DEFAULT_ADDRESS 0
 #define NOT_FOUND -1
-#define NO_ERROR 0
+#define OK 0
 #define ERROR 1
 
 /**************************************** Limitations ****************************************/
 
-#define MAX_LINE 82 /* maximum chars per line */
+#define MAX_LINE 90 /* beyond max line to check for 80 char limit */
+#define CHAR_LIMIT 82 /* char limit per maman's rules */
 #define MINIMUM_LABEL_LENGTH_WITH_COLON 2
 #define MINIMUM_LABEL_LENGTH_WITHOUT_COLON 1
 #define LABEL_LENGTH 30 /* maximum chars per label */
@@ -26,8 +32,6 @@
 #define MIN_COMMAND_LENGTH 3 /* minimum number of characters in a command */
 
 #define REGISTER_LENGTH 2 /* a register's name contains 2 characters */
-#define MIN_REGISTER 0 /* r0 is the first register */
-#define MAX_REGISTER 7 /* r7 is the last register */
 
 #define MAX_EXTENSION_LEN 5
 
@@ -38,16 +42,11 @@
 #define NUM_DIRECTIVES 5 /* number of existing directives*/
 #define NUM_COMMANDS 16 /* number of existing commands */
 
-#define FIRST_STRUCT_FIELD 1 /* Index of first struct field */
-#define SECOND_STRUCT_FIELD 2 /* Index of second struct field */
 
 /* Bit-related info */
-#define BITS_IN_WORD 10
-#define BITS_IN_OPCODE 4
 #define BITS_IN_METHOD 2
 #define BITS_IN_ARE 2
 #define BITS_IN_REGISTER 4
-#define BITS_IN_ADDRESS 8
 
 /* Addressing methods bits location in the first word of a command */
 #define SRC_METHOD_START_POS 4
@@ -55,7 +54,10 @@
 #define DEST_METHOD_START_POS 2
 #define DEST_METHOD_END_POS 3
 
-#define MACHINE_RAM 2000
+/* as defined in forums, we can ignore that number and set it to a big number to avoid seg-faults
+*  could've implement with malloc but we decided to go with static array since it's allowed
+*/
+#define MACHINE_RAM 2560
 
 /**************************************** Macros ****************************************/
 
@@ -92,7 +94,7 @@ enum errors {
     COMMAND_NOT_FOUND, COMMAND_UNEXPECTED_CHAR, COMMAND_TOO_MANY_OPERANDS, COMMAND_COMMA_IN_A_ROW,
     COMMAND_INVALID_METHOD, COMMAND_INVALID_NUMBER_OF_OPERANDS, COMMAND_INVALID_OPERANDS_METHODS,
     ENTRY_LABEL_DOES_NOT_EXIST, ENTRY_CANT_BE_EXTERN, COMMAND_LABEL_DOES_NOT_EXIST,
-    CANNOT_OPEN_FILE
+    CANNOT_OPEN_FILE, LINE_TO_LONG
 };
 
 /* When we need to specify if label should contain a colon or not */

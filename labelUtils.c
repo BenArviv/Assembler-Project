@@ -1,5 +1,11 @@
+/*********************** AUTHORS **************************
+ * GAL ISRAEL
+ * BEN ARVIV
+**************************************************/
+
 #include "labelUtils.h"
 
+/* checks if a word from line is a label */
 boolean isLabel(char *word, int colon, extVars *vars)
 {
     boolean digits = FALSE; /* if there are digits we can be sure it's not a command name */
@@ -69,6 +75,7 @@ boolean isLabel(char *word, int colon, extVars *vars)
     return TRUE;
 }
 
+/* add a new label to the linked list */
 labelPtr addLabel(char *name, unsigned int address, extVars *vars, boolean external)
 {
     labelPtr ptr = vars -> symbolsTable;
@@ -98,9 +105,9 @@ labelPtr addLabel(char *name, unsigned int address, extVars *vars, boolean exter
     else
         {
             vars -> externFlag = TRUE;
-            temp -> IsExternal = TRUE; /* added, MAYBE WILL BE REMOVED */
+            temp -> IsExternal = TRUE; 
         }
-
+    /* if list is empty so we set temp to be the head of the list */
     if ((vars -> symbolsTable) == NULL)
     {
         vars -> symbolsTable = temp;
@@ -108,6 +115,7 @@ labelPtr addLabel(char *name, unsigned int address, extVars *vars, boolean exter
         return temp;
     }
 
+    /* setting temp to be the last label in list */
     while (ptr -> next != NULL)
         ptr = ptr -> next;
 
@@ -177,7 +185,7 @@ boolean entryLabel(labelPtr head, char *name, extVars *vars)
     return FALSE;
 }
 
-/* PROBLEMATIC WITH VALGRIND */ 
+/* frees labels */ 
 void freeLabels(labelPtr *head)
 {
     labelPtr temp;
@@ -188,7 +196,7 @@ void freeLabels(labelPtr *head)
         free(temp);
     }
 }
-
+/* delete labels */
 boolean deleteLabel(labelPtr *head, char *name)
 {
     labelPtr temp = *head;
@@ -217,7 +225,7 @@ boolean deleteLabel(labelPtr *head, char *name)
 
     return FALSE;
 }
-
+/* offsets the address of a group of labels by a given num */
 void offsetAdd(labelPtr label, int num, boolean isData)
 {
     while (label)
@@ -226,19 +234,4 @@ void offsetAdd(labelPtr label, int num, boolean isData)
             label -> address += num;
         label = label -> next;
     }
-}
-
-void print_labels(labelPtr h)
-{
-    while (h)
-    {
-        printf("\nname: %s, address: %d, external: %d", h -> name, h -> address, h -> IsExternal);
-        if (h -> IsExternal == 0)
-            printf(", is in action statement: %d -> ", h -> inActionStatement);
-        else
-            printf(" -> ");
-        h = h -> next;
-    }
-
-    printf("*");
 }
