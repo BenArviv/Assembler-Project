@@ -5,7 +5,7 @@
 
 #include "preAssembler.h"
 
-/* runs the preAssembler and returns TRUE if succeeded (no macro syntax issues) */
+/* preAssembler: runs the preAssembler and returns TRUE if succeeded (no macro syntax issues) */
 boolean preAssembler(FILE *fpr, char *writefilename, MacroNode **head)
 {
     if (firstMacroPass(fpr, head))
@@ -19,7 +19,9 @@ boolean preAssembler(FILE *fpr, char *writefilename, MacroNode **head)
     return TRUE;
 }
 
-/*Performing the first pass on the file (inserting the macros into a linkedlist, copying the corresponding rows from the table to the file, etc.)*/
+/* firstMacroPass: performing the first pass on the file 
+ * (inserting the macros into a linkedlist, copying the corresponding rows from the table to the file, etc.)
+ */
 boolean firstMacroPass(FILE *fp, MacroNode **head)
 {
     char line[MAX_LINE];
@@ -52,7 +54,7 @@ boolean firstMacroPass(FILE *fp, MacroNode **head)
     return TRUE;
 }
 
-/* Second Pass - This time we write into the new .am file relvant lines (not macros) and processing the macro  */
+/* secondMacroPass: writes relevant lines (not macros) and processing the macro into the new .am file */
 void secondMacroPass(FILE *fpr, char *writefilename, MacroNode **head)
 {
 
@@ -84,7 +86,7 @@ void secondMacroPass(FILE *fpr, char *writefilename, MacroNode **head)
     fclose(fpr);
 }
 
-/*Checks if line starts with macro or endmacro*/
+/* macroOperation: checks if line starts with macro or endmacro */
 int macroOperation(char line[])
 {
     char firstWord[MAX_LINE];
@@ -99,7 +101,7 @@ int macroOperation(char line[])
     return NOT_MACRO;
 }
 
-/* Pushes macro name in to node, returns FALSE if declaration is wrong */
+/* pushMacroName: pushes macro name into node, returns FALSE if declaration is wrong */
 boolean pushMacroName(MacroNode *temp, char line[], int lineCount, MacroNode **head)
 {
     char cmd[MAX_LINE];
@@ -119,6 +121,7 @@ boolean pushMacroName(MacroNode *temp, char line[], int lineCount, MacroNode **h
     return TRUE;
 }
 
+/* isValidName: checks if given name isn't a restricted name, or an existing macro name */
 boolean isValidName(char *name, MacroNode **head)
 {
     int i = 0;
@@ -171,7 +174,7 @@ boolean isValidName(char *name, MacroNode **head)
 }
 
 
-/* Pushes the macro contents into macro node */
+/* pushMacroContent: pushes the macro contents into macro node */
 void pushMacroContent(MacroNode *temp, FILE *fp, int *lineCounter)
 {
     char line[MAX_LINE];
@@ -188,7 +191,7 @@ void pushMacroContent(MacroNode *temp, FILE *fp, int *lineCounter)
     strcpy(temp -> mcontent, content);
 }
 
-/* Parsing defined macro calls, returns true if the sent line is a macro call */
+/* isMacroCall: parsing defined macro calls, returns true if given line is a macro call */
 boolean isMacroCall(char line[], FILE *fpw, MacroNode *head)
 {
     char Mname[MAX_LINE];
@@ -209,7 +212,7 @@ boolean isMacroCall(char line[], FILE *fpw, MacroNode *head)
     return FALSE;
 }
 
-/* Creates allocates a new node in memory */
+/* createNode: allocates memory for a new node, creates and returns it */
 MacroNode *createNode()
 {
     MacroNode *newNode = (MacroNode *)malloc(sizeof(MacroNode));
@@ -221,7 +224,7 @@ MacroNode *createNode()
     return newNode;
 }
 
-/* frees a given linked-list memory from head to tail */
+/* freeMacroNodes: frees a given linked-list memory from head to tail */
 void freeMacroNodes(MacroNode **head)
 {
     MacroNode *tempNode;

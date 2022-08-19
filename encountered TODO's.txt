@@ -1,0 +1,5 @@
+firstPass.c:
+    line 30: printError(lineCount, vars->error); /* TODO: end this */
+
+preAssembler.c:
+    line 184: while (fgets(line, MAX_LINE, fp) != NULL && macroOperation(line) != END_MACRO) /*TODO: DELETE ISCOMMENT FUNC*/ 

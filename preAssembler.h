@@ -7,10 +7,10 @@
 #include "main.h"
 
 
-/* Sum of defined blacklist */
+/* sum of defined blacklist */
 #define BLACKLIST 30
 
-/* Linked-list that contains macro name and content in each node */
+/* linked-list that contains macro name and content in each node */
 typedef struct MacroList
 {
     char mname[MAX_LINE];

@@ -15,10 +15,7 @@
 #include <math.h>
 #include <ctype.h>
 
-
-
-
-/* prototypes: */
+/* Prototypes: */
 void decTo32(int, char[], char *);
 void copyWord(char *word, char *line);
 void encodeInsturction(unsigned int word, unsigned int instructions[], int *ic);

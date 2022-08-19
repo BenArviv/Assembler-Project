@@ -5,6 +5,7 @@
 
 #include "secondPass.h"
 
+/* secondPass: main second pass routine for file.am */
 void secondPass(FILE *fp, char *filename, extVars *vars)
 {
     char line[MAX_LINE];
@@ -36,6 +37,7 @@ void secondPass(FILE *fp, char *filename, extVars *vars)
     /* TODO: Free labels and externs */
 }
 
+/* readLineSecond: analyzing a given line from file */
 void readLineSecond(char *line, extVars *vars)
 {
     int dirType;
@@ -66,6 +68,7 @@ void readLineSecond(char *line, extVars *vars)
     }
 }
 
+/* writeOutput: creates files as needed, and writes the output on each file */
 boolean writeOutput(char *filename, extVars *vars)
 {
     FILE *fp;
@@ -88,6 +91,7 @@ boolean writeOutput(char *filename, extVars *vars)
     return OK;
 }
 
+/* openFile: opens a file according to file type */
 FILE *openFile(char *filename, int type, extVars *vars)
 {
     
@@ -105,6 +109,7 @@ FILE *openFile(char *filename, int type, extVars *vars)
     return fp;
 }
 
+/* writeExtern: writes the content for file.ext */
 void writeExtern(FILE *fp, extVars *vars)
 {
     char *address;
@@ -120,6 +125,7 @@ void writeExtern(FILE *fp, extVars *vars)
     fclose(fp);
 }
 
+/* writeEntry: writes the content for file.ent */
 void writeEntry(FILE *fp, extVars *vars)
 {
     char *address;
@@ -137,6 +143,7 @@ void writeEntry(FILE *fp, extVars *vars)
     
 }
 
+/* writeOB: writes the content for file.ob */
 void writeOB(FILE *fp, extVars *vars)
 {
     unsigned int address = MEMORY_START;
@@ -170,6 +177,7 @@ void writeOB(FILE *fp, extVars *vars)
     fclose(fp);
 }
 
+/* printCounters: a routine for formatted IC and DC printing (without first ! character) */
 void printCounters(FILE *fp, char *firstCol, char *secondCol){
     int i = 0, j = 0; /* determines from where to print the number */
 
@@ -181,7 +189,7 @@ void printCounters(FILE *fp, char *firstCol, char *secondCol){
     fprintf(fp, "%s\t%s\n", (firstCol + i), (secondCol + j));
 }
 
-/* handles CMDs for 2nd pass */ 
+/* handkeCMDSecond: handles CMDs for second pass */ 
 int handleCMDSecond(int cmdType, char *line, extVars *vars)
 {
     char firstOp[MAX_LINE];  /* first cmd operand */
@@ -218,7 +226,7 @@ int handleCMDSecond(int cmdType, char *line, extVars *vars)
     return encodeAddtional(src, dest, isSrc, isDest, srcMethod, destMethod, vars);
 }
 
-/* encodes additional words to memory */
+/* encodeAdditional: encodes additional words to memory */
 int encodeAddtional(char *src, char *dest, boolean isSrc, boolean isDest, int srcMethod, int destMethod, extVars *vars)
 {
     if (isSrc && isDest && srcMethod == METHOD_REGISTER && destMethod == METHOD_REGISTER)
@@ -233,7 +241,7 @@ int encodeAddtional(char *src, char *dest, boolean isSrc, boolean isDest, int sr
     return isError(&(vars -> error));
 }
 
-/* additional words for a register operand */
+/* registerOperand: additional words for a register operand */
 unsigned int registerOperand(boolean isDest, char *reg)
 {
     unsigned int word = (unsigned int)atoi(reg + 1);
@@ -243,7 +251,7 @@ unsigned int registerOperand(boolean isDest, char *reg)
     return word;
 }
 
-/* encodes additional words to instructions memory, given the addressing method */
+/* additionalWords: encodes additional words to instructions memory, given the addressing method */
 void additionalWords(boolean isDest, int method, char *op, extVars *vars)
 {
     unsigned int word = EMPTY_WORD;
@@ -275,6 +283,7 @@ void additionalWords(boolean isDest, int method, char *op, extVars *vars)
     }
 }
 
+/* encodeLabel: encodes a label to the memory */
 void encodeLabel(char *name, extVars *vars)
 {
     unsigned int word; /* to be encoded */
@@ -299,7 +308,7 @@ void encodeLabel(char *name, extVars *vars)
         vars -> error = COMMAND_LABEL_DOES_NOT_EXIST;
     }
 }
-/* sets param flags to true or false for each command */
+/* cmdOperandsSecond: sets param flags to true or false for each command */
 void cmdOpernadsSecond(int type, boolean *isSrc, boolean *isDest)
 {
     switch (type)
@@ -336,6 +345,7 @@ void cmdOpernadsSecond(int type, boolean *isSrc, boolean *isDest)
     }
 }
 
+/* addExtern: adds a label to the extern's linked-list */
 extPtr addExtern(extPtr *head, char *name, unsigned int ref)
 {
     extPtr t = *head;
@@ -364,6 +374,8 @@ extPtr addExtern(extPtr *head, char *name, unsigned int ref)
 
     return temp;
 }
+
+/* freeExterns: frees the extern's linked-list */
 void freeExterns(extPtr *head)
 {
     extPtr ptr = *head;

@@ -72,6 +72,7 @@ void decTo32(int dec, char key[], char *converted)
     }
 }
 
+/* createFileName: adds the required suffix to a file name */
 char *createFileName(char *original, int type)
 {
     char *newFileName = (char *)malloc(sizeof(strlen(original)) + MAX_EXTENSION_LEN);
@@ -109,6 +110,7 @@ char *createFileName(char *original, int type)
     return newFileName;
 }
 
+/* skipWhiteChars: skips to the next non-white char in the given string */
 char *skipWhiteChars(char *line)
 {
     if (line == NULL)
@@ -117,23 +119,27 @@ char *skipWhiteChars(char *line)
         line++;
     return line++;
 }
-/* Skips line if line is blank or comment */
+
+/* skipLine: skips a line if it is blank or comment */
 boolean skipLine(char *line)
 {
     line = skipWhiteChars(line);
     return *line == '\0' || *line == ';' || *line == '\n';
 }
 
+/* isLineEnd: checks if line has ended */
 boolean isLineEnd(char *line)
 {
     return line == NULL || *line == '\0' || *line == '\n';
 }
 
+/* copyWord: copies given word to another string */
 void copyWord(char *firstWord, char *line)
 {
     sscanf(line, "%s", firstWord);
 }
 
+/* findCMD: checks if given word matches any of the commands */
 int findCMD(char *word, stringStruct cmd[])
 {
     int wordLength = strlen(word);
@@ -141,6 +147,8 @@ int findCMD(char *word, stringStruct cmd[])
         return NOT_FOUND;
     return findStr(word, cmd, NUM_COMMANDS);
 }
+
+/* findStr: checks if given word appears in the array */
 int findStr(char *word, stringStruct arr[], int arrLen)
 {
     int i;
@@ -150,11 +158,13 @@ int findStr(char *word, stringStruct arr[], int arrLen)
     return NOT_FOUND;
 }
 
+/* isRegister: return boolean value whether a word is a register */
 boolean isRegister(char *word)
 {
     return strlen(word) == REGISTER_LENGTH && word[0] == 'r' && word[1] >= '0' && word[1] <= '7';
 }
 
+/* nextWord: increments line until the start of the next word */
 char *nextWord(char *line)
 {
     if (line == NULL)
@@ -166,6 +176,8 @@ char *nextWord(char *line)
         return NULL;
     return line;
 }
+
+/* nextCommaWord: increments the line until the next comma/word */
 char *nextCommaWord(char *word, char *line)
 {
     if (isLineEnd(line))
@@ -192,6 +204,7 @@ char *nextCommaWord(char *word, char *line)
     return line;
 }
 
+/* nextString: reads the next string after a comma */
 char *nextString(char *word, char *line)
 {
     char temp[MAX_LINE];
@@ -207,11 +220,13 @@ char *nextString(char *word, char *line)
     return line;
 }
 
+/* isError: checks if encountered any errors */
 boolean isError(int *error)
 {
     return *error != OK;
 }
 
+/* findDirective: checks if given word appears in dir array */
 int findDirective(char *word, stringStruct dir[])
 {
     if (word == NULL || *word != '.')
@@ -219,6 +234,7 @@ int findDirective(char *word, stringStruct dir[])
     return findStr(word, dir, NUM_DIRECTIVES);
 }
 
+/* isValidNum: checks if a number is valid acording to the assignment */
 boolean isValidNum(char *word)
 {
     if (isLineEnd(word))
@@ -237,6 +253,7 @@ boolean isValidNum(char *word)
     return TRUE;
 }
 
+/* isValidString: checks if given string is a valid string value (starts and ends with ") */
 boolean isValidString(char *string)
 {
     if (string == NULL)
@@ -255,16 +272,19 @@ boolean isValidString(char *string)
     return TRUE;
 }
 
+/* encodeARE: encodes A/R/E according to parameters recieved */
 unsigned int encodeARE(unsigned int info, int type)
 {
     return (info << BITS_IN_ARE) | type;
 }
 
+/* encodeInstructions: encodes a word to the instructions array, in the IC'th place */
 void encodeInsturction(unsigned int word, unsigned int instructions[], int *ic)
 {
     instructions[((*ic)++)] = word;
 }
 
+/* extractBits: determines which bits are on for given word */
 unsigned int extractBits(unsigned int word, int start, int end)
 {
     unsigned int result;
@@ -276,8 +296,9 @@ unsigned int extractBits(unsigned int word, int start, int end)
     return result;
 }
 
-/* This function receives line number as a parameter and prints a detailed error message
-   accordingly to the error global variable */
+/* printError: receives line number as a parameter and prints a detailed error message
+ * according to the error global variable 
+ */
 void printError(int line_num, int error)
 {
     fprintf(stderr, "ERROR (line %d): ", line_num);

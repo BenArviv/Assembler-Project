@@ -108,7 +108,7 @@ void readLine(char *line, extVars *vars)
     }
 }
 
-/*  */
+/* handleCMD: set of actions in a case that a command has been read */
 int handleCMD(int type, char *line, extVars *vars)
 {
     boolean firstOperand = FALSE, secondOperand = FALSE;
@@ -181,6 +181,7 @@ int handleCMD(int type, char *line, extVars *vars)
 }
 
 /*
+    methodDetect: analyzes the addressing method of the current operand
     Addressing Methods - (0 - Immediate, 1 - Direct, 2 - Struct, 3  - Register)
 */
 int methodDetect(char *operand, extVars *vars)
@@ -218,6 +219,7 @@ int methodDetect(char *operand, extVars *vars)
     return NOT_FOUND;
 }
 
+/* cmdOperands: returns the amount of operands needed, for each CMD read */
 boolean cmdOpernads(int type, boolean firstOp, boolean secondOp)
 {
     switch (type)
@@ -250,6 +252,7 @@ boolean cmdOpernads(int type, boolean firstOp, boolean secondOp)
     return FALSE;
 }
 
+/* cmdMethods: checks if given addressing method matches CMD's addressing methods available */
 boolean cmdMethods(int type, int firstAddMethod, int secondAddMethod)
 {
     switch (type)
@@ -298,6 +301,7 @@ boolean cmdMethods(int type, int firstAddMethod, int secondAddMethod)
     return FALSE;
 }
 
+/* encodeWord: gets a word and encodes it to base32 number, based on CMD, operands etc */
 unsigned int encodeWord(int type, boolean firstOperand, boolean secondOperand, int firstAddMethod, int secondAddMethod)
 {
     unsigned int word = 0;
@@ -318,6 +322,7 @@ unsigned int encodeWord(int type, boolean firstOperand, boolean secondOperand, i
     return word;
 }
 
+/* numbreOfWords: finds how many words are in the current line */
 int numberOfWords(boolean firstOperand, boolean secondOperand, int firstAddMethod, int secondAddMethod)
 {
     int cnt = 0;
@@ -333,6 +338,7 @@ int numberOfWords(boolean firstOperand, boolean secondOperand, int firstAddMetho
     return cnt;
 }
 
+/* addMethodNumOfWords: returns the amount of word, depends on the addressing method */
 int AddMethodNumOfWords(int addMethod)
 {
     if (addMethod == METHOD_STRUCT)
@@ -348,6 +354,7 @@ int AddMethodNumOfWords(int addMethod)
     ########################################################################
 */
 
+/* handleDir: set of actions in case that a directive has been read */
 int handleDir(int type, char *line, extVars *vars)
 {
     if (line == NULL || isLineEnd(line))
@@ -377,6 +384,7 @@ int handleDir(int type, char *line, extVars *vars)
     return OK;
 }
 
+/* handleDataDir: actions for data directive */
 int handleDataDir(char *line, int *error, int *dc, unsigned int data[])
 {
     char word[MAX_LINE];
@@ -438,6 +446,7 @@ int handleDataDir(char *line, int *error, int *dc, unsigned int data[])
     return OK;
 }
 
+/* handleStringDir: actions for string directive */
 int handleStringDir(char *line, int *error, int *dc, unsigned int data[])
 {
     char word[MAX_LINE];
@@ -465,6 +474,7 @@ int handleStringDir(char *line, int *error, int *dc, unsigned int data[])
     return OK;
 }
 
+/* handleStructDir: actions for struct directive */
 int handleStructDir(char *line, int *error, int *dc, unsigned int data[])
 {
     char word[MAX_LINE];
@@ -546,7 +556,7 @@ int handleStructDir(char *line, int *error, int *dc, unsigned int data[])
     return OK;
 }
 
-/* checking syntax only */
+/* handleEntryDir: actions for entry directive (syntax check) */
 int handleEntryDir(char *line, int *error)
 {
     if (!isLineEnd(nextWord(line)))
@@ -556,7 +566,8 @@ int handleEntryDir(char *line, int *error)
     }
     return OK;
 }
-/* handles .extern directive */
+
+/* handleExterDir: actions for extern directive */
 int handleExternDir(char *line, extVars *vars)
 {
     char word[MAX_LINE];
@@ -583,13 +594,13 @@ int handleExternDir(char *line, extVars *vars)
     return isError(&(vars->error));
 }
 
-/* encodes a given num to data */
+/* writeNumberToData: encodes a given number to data */
 void writeNumberToData(int num, int *dc, unsigned int data[])
 {
     data[(*dc)++] = (unsigned int)num;
 }
 
-/* encodes a given string to data */
+/* writeStringToData: encodes a given string to data */
 void writeStringToData(char *str, int *dc, unsigned int data[])
 {
     while (!isLineEnd(str))

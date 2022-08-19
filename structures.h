@@ -45,9 +45,9 @@ typedef struct vars_s {
 	int error; /* error indicator */
 	unsigned int data[MACHINE_RAM];
 	unsigned int instructions[MACHINE_RAM];
-	boolean entryFlag;
-	boolean externFlag; /* a flag if current symbol has .extern label */
-	boolean recordedError; /* a flag if an error had encountered */
+	boolean entryFlag; /* a flag if encountered an .entry label */
+	boolean externFlag; /* a flag if encountered an .extern label */
+	boolean recordedError; /* a flag if encountered an error */
 	labelPtr symbolsTable;
 	stringStruct *cmd;
 	stringStruct *dir;

@@ -5,7 +5,7 @@
 
 #include "labelUtils.h"
 
-/* checks if a word from line is a label */
+/* isLabel: checks if a word from line is a label */
 boolean isLabel(char *word, int colon, extVars *vars)
 {
     boolean digits = FALSE; /* if there are digits we can be sure it's not a command name */
@@ -75,7 +75,7 @@ boolean isLabel(char *word, int colon, extVars *vars)
     return TRUE;
 }
 
-/* add a new label to the linked list */
+/* addLabel: add a new label to the linked list */
 labelPtr addLabel(char *name, unsigned int address, extVars *vars, boolean external)
 {
     labelPtr ptr = vars -> symbolsTable;
@@ -144,7 +144,7 @@ labelPtr getLabel(labelPtr head, char *name)
 
     return NULL;
 }
-/* returns address of a given label */
+/* getLabelAddress: returns the address of a given label */
 unsigned int getLabelAddress(labelPtr head, char *name)
 {
     labelPtr label = getLabel(head, name);
@@ -153,7 +153,7 @@ unsigned int getLabelAddress(labelPtr head, char *name)
     return FALSE;
 }
 
-/* return true/false if label is external */
+/* isLabelExternal: return boolean value whether label is external */
 boolean isLabelExternal(labelPtr head, char *name)
 {
     labelPtr label = getLabel(head, name);
@@ -163,8 +163,7 @@ boolean isLabelExternal(labelPtr head, char *name)
 }
 
 /* 
- * searching for the given label name and changing it's entry properties to TRUE
- * if failed to find label return false;
+ * entryLabel: finds a label node according to received name, and returns its entry property
  */
 boolean entryLabel(labelPtr head, char *name, extVars *vars)
 {
@@ -185,7 +184,7 @@ boolean entryLabel(labelPtr head, char *name, extVars *vars)
     return FALSE;
 }
 
-/* frees labels */ 
+/* freeLabels: frees the labels */ 
 void freeLabels(labelPtr *head)
 {
     labelPtr temp;
@@ -196,7 +195,7 @@ void freeLabels(labelPtr *head)
         free(temp);
     }
 }
-/* delete labels */
+/* deleteLabel: deletes the labels */
 boolean deleteLabel(labelPtr *head, char *name)
 {
     labelPtr temp = *head;
@@ -225,7 +224,7 @@ boolean deleteLabel(labelPtr *head, char *name)
 
     return FALSE;
 }
-/* offsets the address of a group of labels by a given num */
+/* offsetAdd: offsets the address of a group of labels by a given num */
 void offsetAdd(labelPtr label, int num, boolean isData)
 {
     while (label)
