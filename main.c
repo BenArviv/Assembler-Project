@@ -77,10 +77,10 @@ int main(int argc, char *argv[])
         else /* if we wasn't able to open file */
             fprintf(stderr, "%s%sERROR%s : Cannot open file: %s%s\n\n", RED, BOLD, RESET_COLOR,BOLD,argv[i]);
         free(filename);
+        freeMacroNodes(&macroHead);
     }
     /* Free any allocated memory we've might used */
     freeLabels(&(vars->symbolsTable));
-    freeMacroNodes(&macroHead);
     free(vars);
     return 0;
 }
