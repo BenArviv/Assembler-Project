@@ -43,12 +43,18 @@ int main(int argc, char *argv[])
                                {".extern"}};
 
     extVars *vars;
-    refactor(vars) for (i = 1; i < argc; i++)
+    refactor(vars) 
+    for (i = 1; i < argc; i++)
     {
         filename = createFileName(argv[i], FILE_INPUT);
         fp = fopen(filename, "r");
         if (fp != NULL) /* if we managed to open file */
         {
+            vars -> symbolsTable = NULL;
+            vars -> externList = NULL;
+            vars -> entryFlag = FALSE;
+            vars -> externFlag = FALSE;
+            vars -> recordedError = FALSE;
             printf("\n-------- Proccessing: %s%s\"%s\"%s%s --------\n\n", BLUE, BOLD, filename, BOLDEND, RESET_COLOR);
             amFilename = createFileName(argv[i], FILE_MACRO); /* .am appended to filename */
             if (preAssembler(fp, amFilename, &macroHead))

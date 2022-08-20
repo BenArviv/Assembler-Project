@@ -34,7 +34,6 @@ void secondPass(FILE *fp, char *filename, extVars *vars)
     freeLabels(&(vars -> symbolsTable));
     freeExterns(&(vars -> externList));
     
-    /* TODO: Free labels and externs */
 }
 
 /* readLineSecond: analyzing a given line from file */
