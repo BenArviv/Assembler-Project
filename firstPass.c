@@ -19,7 +19,7 @@ void firstPass(FILE *fp, extVars *vars)
         vars->error = OK;
         if (!skipLine(line))
         {
-            if (strlen(line) > CHAR_LIMIT)
+            if (strlen(line) > CHAR_LIMIT) /* counting whitechars as a legal chars that included in the 80 chars limit, if line exceeds the limit, we skip it */
                 vars->error = LINE_TO_LONG;
             else
                 readLine(line, vars);
@@ -27,7 +27,7 @@ void firstPass(FILE *fp, extVars *vars)
         if (isError(&(vars->error)))
         {
             vars->recordedError = TRUE;
-            printError(lineCount, vars->error); /* TODO: end this */
+            printError(lineCount, vars->error); 
         }
 
         lineCount++;

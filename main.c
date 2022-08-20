@@ -1,7 +1,7 @@
 /*********************** AUTHORS **************************
  * GAL ISRAEL
  * BEN ARVIV
-**************************************************/
+ **************************************************/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -43,37 +43,44 @@ int main(int argc, char *argv[])
                                {".extern"}};
 
     extVars *vars;
-    for (i = 1; i < argc; i++)
+    refactor(vars) for (i = 1; i < argc; i++)
     {
-        refactor(vars)
         filename = createFileName(argv[i], FILE_INPUT);
         fp = fopen(filename, "r");
         if (fp != NULL) /* if we managed to open file */
         {
+            printf("\n-------- Proccessing: %s%s\"%s\"%s%s --------\n\n", BLUE, BOLD, filename, BOLDEND, RESET_COLOR);
             amFilename = createFileName(argv[i], FILE_MACRO); /* .am appended to filename */
             if (preAssembler(fp, amFilename, &macroHead))
             {
                 fp = fopen(amFilename, "r");
                 firstPass(fp, vars);
 
-                if (!(vars->recordedError)) /* if we had errors, we do not continue to secondPass */ 
+                if (!(vars->recordedError)) /* if we had errors, we do not continue to secondPass */
                 {
                     rewind(fp);
                     secondPass(fp, argv[i], vars);
                 }
                 fclose(fp);
             }
+            else
+                vars->recordedError = TRUE;
+
             free(amFilename); /* we have a pointer, hence no longer needed */
+            if (!(vars->recordedError))
+                printf("\n-------- Finished %s%s\"[%s]\"%s%s assembling process %ssuccessfully%s --------\n\n", GREEN, BOLD, filename, RESET_COLOR, BOLDEND, GREEN, RESET_COLOR);
+            else
+                printf("\n-------- Finished %s%s\"[%s]\"%s%s assembling process with %serrors%s --------\n\n", RED, BOLD, filename, RESET_COLOR, BOLDEND, RED, RESET_COLOR);
+
         }
 
-        else
-            fprintf(stderr, "cannot open file: %s\n", argv[i]);
-
-        /* Free any allocated memory we've might used */
-        freeLabels(&(vars->symbolsTable));
-        freeMacroNodes(&macroHead);
+        else /* if we wasn't able to open file */
+            fprintf(stderr, "%s%sERROR%s : Cannot open file: %s%s\n\n", RED, BOLD, RESET_COLOR,BOLD,argv[i]);
         free(filename);
-        free(vars);
     }
+    /* Free any allocated memory we've might used */
+    freeLabels(&(vars->symbolsTable));
+    freeMacroNodes(&macroHead);
+    free(vars);
     return 0;
 }

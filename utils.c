@@ -1,7 +1,7 @@
 /*********************** AUTHORS **************************
  * GAL ISRAEL
  * BEN ARVIV
-**************************************************/
+ **************************************************/
 
 #include "utils.h"
 
@@ -296,12 +296,10 @@ unsigned int extractBits(unsigned int word, int start, int end)
     return result;
 }
 
-/* printError: receives line number as a parameter and prints a detailed error message
- * according to the error global variable 
- */
+/* printError: receives line number as a parameter and prints a detailed error message according to enum error */
 void printError(int line_num, int error)
 {
-    fprintf(stderr, "ERROR (line %d): ", line_num);
+    fprintf(stderr, "%s%sERROR%s %s(line %d): %s", BOLD, RED, RESET_COLOR, BOLD, line_num, BOLDEND);
 
     switch (error)
     {
@@ -316,7 +314,7 @@ void printError(int line_num, int error)
         break;
 
     case LABEL_TOO_LONG:
-        fprintf(stderr, "label is too long (LABEL_MAX_LENGTH: %d).\n", LABEL_LENGTH);
+        fprintf(stderr, "label is too long (MAX LENGTH IS: %d).\n", LABEL_LENGTH);
 
         break;
 
@@ -490,6 +488,10 @@ void printError(int line_num, int error)
 
         break;
 
+    case ILLEGAL_MACRO:
+        fprintf(stderr, "illegal macro declaration\n");
+
+        break;
     case CANNOT_OPEN_FILE:
         fprintf(stderr, "there was an error while trying to open the requested file.\n");
     }

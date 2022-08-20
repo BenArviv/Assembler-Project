@@ -1,7 +1,7 @@
 /*********************** AUTHORS **************************
  * GAL ISRAEL
  * BEN ARVIV
-**************************************************/
+ **************************************************/
 
 #include "preAssembler.h"
 
@@ -19,7 +19,7 @@ boolean preAssembler(FILE *fpr, char *writefilename, MacroNode **head)
     return TRUE;
 }
 
-/* firstMacroPass: performing the first pass on the file 
+/* firstMacroPass: performing the first pass on the file
  * (inserting the macros into a linkedlist, copying the corresponding rows from the table to the file, etc.)
  */
 boolean firstMacroPass(FILE *fp, MacroNode **head)
@@ -36,7 +36,7 @@ boolean firstMacroPass(FILE *fp, MacroNode **head)
             temp = createNode();
             if (temp == NULL)
             {
-                printf("Dynamic allocation error");
+                fprintf(stderr, "Dynamic allocation error\n");
                 return FALSE;
             }
             if (!pushMacroName(temp, line, lineCount, head)) /* if failed to push macro name (because of syntax error) */
@@ -44,12 +44,10 @@ boolean firstMacroPass(FILE *fp, MacroNode **head)
                 free(temp); /* frees the newly created node and returns false */
                 return FALSE;
             }
-            printf("before increasing: %d\n",lineCount);
             pushMacroContent(temp, fp, &lineCount);
-                        printf("after increasing: %d\n",lineCount);
-            temp -> next = *head;
+            temp->next = *head;
             *head = temp;
-        } 
+        }
     }
     return TRUE;
 }
@@ -63,8 +61,9 @@ void secondMacroPass(FILE *fpr, char *writefilename, MacroNode **head)
     FILE *fpw;
     rewind(fpr);
     fpw = fopen(writefilename, "w");
-    if (fpw == NULL){
-        printf("Error: can't open file: %s \n \n", writefilename);
+    if (fpw == NULL)
+    {
+        fprintf(stderr, "Error: can't open file: %s \n \n", writefilename);
         return;
     }
     while (fgets(line, MAX_LINE, fpr))
@@ -109,15 +108,15 @@ boolean pushMacroName(MacroNode *temp, char line[], int lineCount, MacroNode **h
     char garbage[MAX_LINE];
     if (sscanf(line, "%s %s %s", cmd, name, garbage) != 2) /* if declaration doesn't have a name or have 1 or more names, EXITING */
     {
-        printf("ERROR (line %d): illegal macro declaration\n", lineCount);
+        printError(lineCount, ILLEGAL_MACRO);
         return FALSE;
     }
     if (!isValidName(name, head))
     {
-        printf("ERROR (line %d): \"%s\" is a reserved or used name, Can't use this name for macro.\n", lineCount, name);
+        fprintf(stderr, "ERROR (line %d): \"%s\" is a reserved or used name, Can't use this name for macro.\n", lineCount, name);
         return FALSE;
     }
-    strcpy(temp -> mname, name);
+    strcpy(temp->mname, name);
     return TRUE;
 }
 
@@ -166,13 +165,12 @@ boolean isValidName(char *name, MacroNode **head)
     }
     while (pointer != NULL)
     {
-        if (!strcmp(pointer -> mname, name))
+        if (!strcmp(pointer->mname, name))
             return FALSE;
-        pointer = pointer -> next;
+        pointer = pointer->next;
     }
     return TRUE;
 }
-
 
 /* pushMacroContent: pushes the macro contents into macro node */
 void pushMacroContent(MacroNode *temp, FILE *fp, int *lineCounter)
@@ -181,14 +179,13 @@ void pushMacroContent(MacroNode *temp, FILE *fp, int *lineCounter)
     char content[MAX_LINE];
     memset(line, '\0', MAX_LINE);
     memset(content, '\0', MAX_LINE);
-    while (fgets(line, MAX_LINE, fp) != NULL && macroOperation(line) != END_MACRO) /*TODO: DELETE ISCOMMENT FUNC*/ 
+    while (fgets(line, MAX_LINE, fp) != NULL && macroOperation(line) != END_MACRO)
     {
         strncat(content, line, MAX_LINE);
-        printf("counter in push macro content: %d\n", *lineCounter);
-        (*lineCounter)+=1;
+        (*lineCounter) += 1;
     }
-    (*lineCounter)+=1;
-    strcpy(temp -> mcontent, content);
+    (*lineCounter) += 1;
+    strcpy(temp->mcontent, content);
 }
 
 /* isMacroCall: parsing defined macro calls, returns true if given line is a macro call */
@@ -201,12 +198,12 @@ boolean isMacroCall(char line[], FILE *fpw, MacroNode *head)
     {
         while (pointer != NULL)
         {
-            if (!strcmp(pointer -> mname, Mname))
+            if (!strcmp(pointer->mname, Mname))
             {
-                fprintf(fpw, "%s", pointer -> mcontent);
+                fprintf(fpw, "%s", pointer->mcontent);
                 return TRUE;
             }
-            pointer = pointer -> next;
+            pointer = pointer->next;
         }
     }
     return FALSE;
@@ -231,8 +228,7 @@ void freeMacroNodes(MacroNode **head)
     while (*head != NULL)
     {
         tempNode = *head;
-        *head = (*head) -> next;
+        *head = (*head)->next;
         free(tempNode);
     }
 }
-

@@ -114,7 +114,6 @@ void writeExtern(FILE *fp, extVars *vars)
 {
     char *address;
     extPtr ptr = vars -> externList;
-    printf("extern address in dec: %d\n", ptr -> address);
     do
     {
         address = decToBase32(ptr -> address);
