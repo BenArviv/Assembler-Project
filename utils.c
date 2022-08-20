@@ -296,6 +296,12 @@ unsigned int extractBits(unsigned int word, int start, int end)
     return result;
 }
 
+FILE * nextLine (FILE *fp)
+{
+    while (!feof(fp) && fgetc(fp) != '\n'){}
+    return fp;
+}
+
 /* printError: receives line number as a parameter and prints a detailed error message according to enum error */
 void printError(int line_num, int error)
 {

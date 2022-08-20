@@ -39,5 +39,6 @@ boolean isRegister(char *word);
 boolean isError(int *error);
 boolean isValidNum(char *word);
 boolean isValidString(char *string);
+FILE * nextLine (FILE *fp);
 
 #endif

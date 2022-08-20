@@ -20,7 +20,10 @@ void firstPass(FILE *fp, extVars *vars)
         if (!skipLine(line))
         {
             if (strlen(line) > CHAR_LIMIT) /* counting whitechars as a legal chars that included in the 80 chars limit, if line exceeds the limit, we skip it */
-                vars->error = LINE_TO_LONG;
+                {
+                    vars->error = LINE_TO_LONG;
+                    fp = nextLine(fp);
+                }
             else
                 readLine(line, vars);
         }

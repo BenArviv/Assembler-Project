@@ -10,7 +10,7 @@
             "name": "Launch(gdb)",
             "program": "${workspaceFolder}/assembler",
             "cwd": "${workspaceRoot}",
-            "programArgs": "test2 testwith2"
+            "programArgs": "Project_Test_File1"
         }
     ]
 }
