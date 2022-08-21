@@ -15,18 +15,15 @@
 #include <ctype.h>
 
 /* Prototypes: */
-void decTo32(int, char[], char *);
 void copyWord(char *word, char *line);
 void encodeInsturction(unsigned int word, unsigned int instructions[], int *ic);
 void printError(int line_num, int error);
 char *decToBase32(int);
-char *binToBase32(int);
 char *createFileName(char *original, int type);
 char* skipWhiteChars(char *line);
 char *nextWord(char *line);
 char *nextCommaWord(char *word, char *line);
 char *nextString(char *word, char *line);
-int binToDec(int);
 int findCMD(char *word, stringStruct cmd[]);
 int findStr(char *word, stringStruct cmd[], int arrLen);
 int findDirective(char *word, stringStruct dir[]);
