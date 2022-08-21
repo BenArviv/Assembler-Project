@@ -1,7 +1,6 @@
 /*********************** AUTHORS **************************
- * GAL ISRAEL
- * BEN ARVIV
-**************************************************/
+                GAL ISRAEL, BEN ARVIV
+ *********************************************************/
 
 #ifndef LABELS_H
 #define LABELS_H
@@ -9,7 +8,7 @@
 #include "structures.h"
 #include "firstPass.h"
 
-/* PROTOTYPES */
+/* Prototypes */
 void freeLabels(labelPtr *head);
 void offsetAdd(labelPtr label, int num, boolean isData);
 unsigned int getLabelAddress(labelPtr head, char *name);

@@ -1,7 +1,6 @@
 /*********************** AUTHORS **************************
- * GAL ISRAEL
- * BEN ARVIV
-**************************************************/
+                GAL ISRAEL, BEN ARVIV
+ *********************************************************/
 
 #ifndef STRUCTURES_H
 
@@ -30,6 +29,7 @@ typedef struct {
     char *name; 
 } stringStruct;
 
+/* linked-list for extern labels */
 typedef struct ext *extPtr;
 typedef struct ext {
 	char name[LABEL_LENGTH];

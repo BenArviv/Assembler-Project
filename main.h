@@ -1,7 +1,6 @@
 /*********************** AUTHORS **************************
- * GAL ISRAEL
- * BEN ARVIV
- **************************************************/
+                GAL ISRAEL, BEN ARVIV
+ *********************************************************/
 
 /*
     This file contains constants and enums that are used all over the program.
@@ -20,7 +19,7 @@
 #define OK 0
 #define ERROR 1
 
-/**************************************** STYLES ****************************************/
+/**************************************** Styles ****************************************/
 
 #define BOLDEND "\x1B[0m"
 #define BOLD "\x1B[1m" /*Bold Text Formula*/
@@ -160,7 +159,7 @@ enum errors
     ENTRY_CANT_BE_EXTERN,
     COMMAND_LABEL_DOES_NOT_EXIST,
     CANNOT_OPEN_FILE,
-    LINE_TO_LONG,
+    LINE_TOO_LONG,
     ILLEGAL_MACRO
 };
 

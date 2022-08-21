@@ -1,7 +1,6 @@
 /*********************** AUTHORS **************************
- * GAL ISRAEL
- * BEN ARVIV
- **************************************************/
+                GAL ISRAEL, BEN ARVIV
+ *********************************************************/
 
 #include "preAssembler.h"
 
@@ -20,7 +19,7 @@ boolean preAssembler(FILE *fpr, char *writefilename, MacroNode **head)
 }
 
 /* firstMacroPass: performing the first pass on the file
- * (inserting the macros into a linkedlist, copying the corresponding rows from the table to the file, etc.)
+ * (inserting the macros into a linked-list, copying the corresponding rows from the table to the file, etc.)
  */
 boolean firstMacroPass(FILE *fp, MacroNode **head)
 {
@@ -70,7 +69,7 @@ void secondMacroPass(FILE *fpr, char *writefilename, MacroNode **head)
     {
         if (!inMacro)
         {
-            if (!isMacroCall(line, fpw, *head)) /* Check wether is a macro call, if yes replacing the call with the relvant macro content, if not continue */
+            if (!isMacroCall(line, fpw, *head)) /* check wether is a macro call, if yes replacing the call with the relvant macro content, otherwise continue */
             {
                 if (macroOperation(line) == NOT_MACRO) /* not start or end of macro */
                     fprintf(fpw, "%s", line);

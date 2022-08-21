@@ -1,7 +1,6 @@
 /*********************** AUTHORS **************************
- * GAL ISRAEL
- * BEN ARVIV
- **************************************************/
+                GAL ISRAEL, BEN ARVIV
+ *********************************************************/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -67,9 +66,13 @@ int main(int argc, char *argv[])
                     rewind(fp);
                     secondPass(fp, argv[i], vars);
                 }
+                else { /* errors have been encountered, hence we free the current lists */
+                    freeLabels(&(vars -> symbolsTable));
+                    freeExterns(&(vars -> externList));
+                }
                 fclose(fp);
             }
-            else
+            else 
                 vars->recordedError = TRUE;
 
             free(amFilename); /* we have a pointer, hence no longer needed */
@@ -85,7 +88,7 @@ int main(int argc, char *argv[])
         free(filename);
         freeMacroNodes(&macroHead);
     }
-    /* Free any allocated memory we've might used */
+    /* free any allocated memory we've might used */
     freeLabels(&(vars->symbolsTable));
     free(vars);
     return 0;

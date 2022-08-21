@@ -1,7 +1,6 @@
 /*********************** AUTHORS **************************
- * GAL ISRAEL
- * BEN ARVIV
-**************************************************/
+                GAL ISRAEL, BEN ARVIV
+ *********************************************************/
 
 #include "firstPass.h"
 #include "labelUtils.h"
@@ -21,7 +20,7 @@ void firstPass(FILE *fp, extVars *vars)
         {
             if (strlen(line) > CHAR_LIMIT) /* counting whitechars as a legal chars that included in the 80 chars limit, if line exceeds the limit, we skip it */
                 {
-                    vars->error = LINE_TO_LONG;
+                    vars->error = LINE_TOO_LONG;
                     fp = nextLine(fp);
                 }
             else
@@ -111,7 +110,7 @@ void readLine(char *line, extVars *vars)
     }
 }
 
-/* handleCMD: set of actions in a case that a command has been read */
+/* handleCMD: set of actions in case that a command has been read */
 int handleCMD(int type, char *line, extVars *vars)
 {
     boolean firstOperand = FALSE, secondOperand = FALSE;
@@ -325,7 +324,7 @@ unsigned int encodeWord(int type, boolean firstOperand, boolean secondOperand, i
     return word;
 }
 
-/* numbreOfWords: finds how many words are in the current line */
+/* numberOfWords: finds how many words are in the current line */
 int numberOfWords(boolean firstOperand, boolean secondOperand, int firstAddMethod, int secondAddMethod)
 {
     int cnt = 0;
@@ -419,7 +418,7 @@ int handleDataDir(char *line, int *error, int *dc, unsigned int data[])
                     writeNumberToData(atoi(word), dc, data);
                 }
             }
-            else if (*word != ',') /*if there was a number we need a comma */
+            else if (*word != ',') /* if there was a number we need a comma */
             {
                 *error = DATA_EXPECTED_COMMA_AFTER_NUM;
                 return ERROR;
@@ -454,15 +453,15 @@ int handleStringDir(char *line, int *error, int *dc, unsigned int data[])
 {
     char word[MAX_LINE];
     line = nextString(word, line);
-    if (!isLineEnd(word) && isValidString(word)) /* if first arg a valid string */
+    if (!isLineEnd(word) && isValidString(word)) /* if first argument is a valid string */
     {
         line = skipWhiteChars(line);
-        if (isLineEnd(line)) /* if we have 1 arg only */
+        if (isLineEnd(line)) /* if we have only one argument */
         {
             word[strlen(word) - 1] = '\0'; /* removing "" and writing to data */
             writeStringToData(word + 1, dc, data);
         }
-        else /* to many args */
+        else /* too many arguments */
         {
             *error = STRING_TOO_MANY_OPERANDS;
             return ERROR;
@@ -487,21 +486,21 @@ int handleStructDir(char *line, int *error, int *dc, unsigned int data[])
         if (isValidNum(word)) /* must be a valid num */
         {
             writeNumberToData(atoi(word), dc, data); /* encoding...*/
-            line = nextCommaWord(word, line); /* next arg */
+            line = nextCommaWord(word, line); /* next argument */
 
             if (!isLineEnd(word))
             {
-                if (*word == ',') /* looking for a comma between args */
+                if (*word == ',') /* looking for a comma between arguments */
                 {
                     line = nextCommaWord(word, line); /* next word */
                     if (!isLineEnd(word)) 
                     {
-                        if (*word == ',') /* if we have another comma its a syntax error */
+                        if (*word == ',') /* if we have another comma it's a syntax error */
                         {
                             *error = STRUCT_COMMA_IN_A_ROW;
                             return ERROR;
                         }
-                        if (isValidString(word)) /* 2nd arg must be a valid string */
+                        if (isValidString(word)) /* second argument must be a valid string */
                         {
                             line = skipWhiteChars(line);
                             if (!isLineEnd(line)) /* if we have more chars at the end it's an error */
@@ -513,7 +512,7 @@ int handleStructDir(char *line, int *error, int *dc, unsigned int data[])
                             word[strlen(word) - 1] = '\0'; /* removing apostrophes ("") and writing to data */
                             writeStringToData(word + 1, dc, data);
                         }
-                        else /* we don't have 2nd arg*/
+                        else /* we don't have second argument */
                         {
                             *error = STRUCT_INVALID_STRING;
                             return ERROR;
@@ -570,12 +569,12 @@ int handleEntryDir(char *line, int *error)
     return OK;
 }
 
-/* handleExterDir: actions for extern directive */
+/* handleExternDir: actions for extern directive */
 int handleExternDir(char *line, extVars *vars)
 {
     char word[MAX_LINE];
     copyWord(word, line);
-    if (isLineEnd(word)) /* if word is empty, so we have no label followed by extern */
+    if (isLineEnd(word)) /* if word is empty, we have no label followed by extern */
     {
         vars->error = EXTERN_NO_LABEL;
         return ERROR;

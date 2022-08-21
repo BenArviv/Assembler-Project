@@ -1,7 +1,6 @@
 /*********************** AUTHORS **************************
- * GAL ISRAEL
- * BEN ARVIV
-**************************************************/
+                GAL ISRAEL, BEN ARVIV
+ *********************************************************/
 
 #include "secondPass.h"
 
@@ -43,7 +42,7 @@ void readLineSecond(char *line, extVars *vars)
     int cmdType;
     char word[MAX_LINE];         /* current word to analyze */
     line = skipWhiteChars(line); /* skipping to the first non-white char*/
-    if (isLineEnd(line))         /* bkipping blank lines */
+    if (isLineEnd(line))         /* skipping blank lines */
         return;
     copyWord(word, line);           /* copying the first word from line */
     if (isLabel(word, COLON, vars)) /* if it's a label we are skipping this word */
@@ -214,7 +213,7 @@ int handleCMDSecond(int cmdType, char *line, extVars *vars)
             line = nextCommaWord(secondOp, line);
             nextCommaWord(secondOp, line);
         }
-        else /* if there's only 1 operand, it's a dest operand */
+        else /* if there's only one operand, it's a dest operand */
         {
             dest = firstOp;
             src = NULL;

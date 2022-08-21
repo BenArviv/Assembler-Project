@@ -1,7 +1,6 @@
 /*********************** AUTHORS **************************
- * GAL ISRAEL
- * BEN ARVIV
- **************************************************/
+                GAL ISRAEL, BEN ARVIV
+ *********************************************************/
 
 #include "utils.h"
 
@@ -81,9 +80,9 @@ char *createFileName(char *original, int type)
         fprintf(stderr, "Dynamic allocation error.");
         exit(ERROR);
     }
-    strcpy(newFileName, original); /* Copying original filename to the bigger string */
+    strcpy(newFileName, original); /* copying original filename to the bigger string */
 
-    /* Concatenating the required file extension */
+    /* concatenating the required file extension */
 
     switch (type)
     {
@@ -489,8 +488,8 @@ void printError(int line_num, int error)
 
         break;
 
-    case LINE_TO_LONG:
-        fprintf(stderr, "line beyond charatecter limit (80), skipping line..\n");
+    case LINE_TOO_LONG:
+        fprintf(stderr, "line beyond charatecter limit (80), skipping line.\n");
 
         break;
 

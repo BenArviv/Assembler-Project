@@ -1,7 +1,6 @@
 /*********************** AUTHORS **************************
- * GAL ISRAEL
- * BEN ARVIV
-**************************************************/
+                GAL ISRAEL, BEN ARVIV
+ *********************************************************/
 
 #include "labelUtils.h"
 
@@ -107,7 +106,7 @@ labelPtr addLabel(char *name, unsigned int address, extVars *vars, boolean exter
             vars -> externFlag = TRUE;
             temp -> IsExternal = TRUE; 
         }
-    /* if list is empty so we set temp to be the head of the list */
+    /* if the list is empty we set temp to be the head of the list */
     if ((vars -> symbolsTable) == NULL)
     {
         vars -> symbolsTable = temp;
@@ -153,7 +152,7 @@ unsigned int getLabelAddress(labelPtr head, char *name)
     return FALSE;
 }
 
-/* isLabelExternal: return boolean value whether label is external */
+/* isLabelExternal: return boolean value whether a label is external */
 boolean isLabelExternal(labelPtr head, char *name)
 {
     labelPtr label = getLabel(head, name);
@@ -195,7 +194,7 @@ void freeLabels(labelPtr *head)
         free(temp);
     }
 }
-/* deleteLabel: deletes the labels */
+/* deleteLabel: deletes the label */
 boolean deleteLabel(labelPtr *head, char *name)
 {
     labelPtr temp = *head;

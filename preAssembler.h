@@ -1,7 +1,6 @@
 /*********************** AUTHORS **************************
- * GAL ISRAEL
- * BEN ARVIV
-**************************************************/
+                GAL ISRAEL, BEN ARVIV
+ *********************************************************/
 
 #include "utils.h"
 #include "main.h"
@@ -14,7 +13,7 @@
 typedef struct MacroList
 {
     char mname[MAX_LINE];
-    char mcontent[MAX_LINE*MAX_LINE]; /* as defined in forums by Yakir, We can set a maximum size to the macro content */
+    char mcontent[MAX_LINE*MAX_LINE]; /* as defined in forums by Yakir, we can set a maximum size to the macro content */
     struct MacroList *next;
 } MacroNode;
 

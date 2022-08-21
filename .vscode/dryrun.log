@@ -1,0 +1,11 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/home/benarviv/Assembler-Project/Assembler-Project-5'
+gcc -c -g -ansi -Wall -pedantic main.c -o main.o
+gcc -c -g -ansi -Wall -pedantic utils.c -o utils.o
+gcc -c -g -ansi -Wall -pedantic preAssembler.c -o preAssembler.o
+gcc -c -g -ansi -Wall -pedantic firstPass.c -o firstPass.o
+gcc -c -g -ansi -Wall -pedantic secondPass.c -o secondPass.o
+gcc -c -g -ansi -Wall -pedantic labelUtils.c -o labelUtils.o
+gcc -g -ansi -Wall -pedantic main.o preAssembler.o utils.o firstPass.o secondPass.o labelUtils.o -o assembler -lm
+make: Leaving directory '/home/benarviv/Assembler-Project/Assembler-Project-5'
+ 
