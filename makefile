@@ -19,9 +19,14 @@ utils.o: utils.c utils.h structures.h
 labelUtils.o: labelUtils.h
 	gcc -c -g -ansi -Wall -pedantic labelUtils.c -o labelUtils.o
 
-
+# cleans o. and exec files
 clean:
 	rm -rf *.o assembler 
 
+# cleans all kind of output files
 testclean:
 	rm -rf *.am *.ent *.ext *.ob
+
+# cleans o files (as we being said not to submit it)
+cleanO:
+	rm -rf *.o
