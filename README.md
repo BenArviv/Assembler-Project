@@ -120,7 +120,7 @@ A **_directive_** line of the following structure:
    e.g. `LABEL1: .data      +7, -56, 4, 9`.
    
    ### `.string`
-   This direcive receives a string as an operand and stores it in the data image. It stores all characters by their order in the string, encoded ny their *ASCII* values.
+   This direcive receives a string as an operand and stores it in the data image. It stores all characters by their order in the string, encoded by their *ASCII* values.
    e.g. `STRING1: .string "abcdef"` is a valid directive.
    
    ### `.struct`
